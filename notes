@@ -1,0 +1,4 @@
+
+
+curl -X POST -H "Content-Type: application/json" -d '{"nick":"aleksy", "email":"eeee", "password":"password"}'  http://localhost:5000/add_user
+curl -X PUT -H "Content-Type: application/json"  -d '{"nick":"aleksy", "email":"newemail@gmai", "password":"password"}'  http://localhost:5000/update_user/4
