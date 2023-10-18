@@ -2,13 +2,12 @@ from flask import jsonify, request, Blueprint
 from marshmallow import ValidationError
 from flask_sqlalchemy import SQLAlchemy
 
-# from app import db
+from app import db
 
 from app.models.user import User
 from app.schemas.user import user_schema, users_schema
 
 bp = Blueprint('user', __name__, url_prefix='/user')
-db = SQLAlchemy()
 
 @bp.route("/get_users", methods = ['GET'])
 def get_users():

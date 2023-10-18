@@ -1,22 +1,12 @@
-from flask import Flask, jsonify, request, make_response, Blueprint
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
-from marshmallow import fields, ValidationError
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
-from flask_cors import CORS
+from flask import jsonify, request, Blueprint
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
 from functools import wraps
 import jwt
-import os 
-from flask_sqlalchemy import SQLAlchemy
 
-from app.models.user import User
-from app.schemas.user import user_schema, users_schema
+from app import db
+
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
-db = SQLAlchemy()  
 
 def token_required(f):
     @wraps(f)
@@ -45,6 +35,6 @@ def login():
     token = jwt.encode({
         'user': auth['username'], 
         'exp': datetime.utcnow() + timedelta(minutes=100000000)}, 
-        app.config['SECRET_KEY'
+        bp.config['SECRET_KEY'
     ])
     return jsonify({'token': token})
