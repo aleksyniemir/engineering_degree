@@ -14,7 +14,7 @@ ma = Marshmallow()
 
 class UserSchema(ma.Schema):
     nick = fields.Str()
-    email = fields.Email()
+    email = fields.Str()
     password = fields.Str()
 
 user_schema = UserSchema()  

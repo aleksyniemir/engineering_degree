@@ -1,6 +1,8 @@
 from flask import jsonify, request, Blueprint
 from marshmallow import ValidationError
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import select
+import re
 
 from app import db
 
@@ -11,7 +13,7 @@ bp = Blueprint('user', __name__, url_prefix='/user')
 
 @bp.route("/get_users", methods = ['GET'])
 def get_users():
-    all_users = User.query.all()
+    all_users = select(User).all()
     result = users_schema.dump(all_users)
     return jsonify(result)
 
@@ -28,10 +30,23 @@ def add_user():
         print(err.messages)
         print(err.valid_data)
         return jsonify(err.messages), 400
+    
+    email_regex = re.compile(
+        r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+    )    
+    if not email_regex.match(user_dict["email"]):
+        return jsonify({"error": "Not a valid email address."}), 400
         
-        
-    # TODO check if nick and email exists
+    existing_user_by_nick_stmt = select(User).where(User.nick==user_dict["nick"])
+    existing_user_by_nick = db.session.execute(existing_user_by_nick_stmt).first()
+    existing_user_by_email_stmt = select(User).where(User.email==user_dict["email"])
+    existing_user_by_email = db.session.execute(existing_user_by_email_stmt).first()
 
+    if existing_user_by_nick:
+        return jsonify({"error": "Nickname already in use"}), 400
+
+    if existing_user_by_email:
+        return jsonify({"error": "Email already in use"}), 400
 
     user = User(**user_dict)
     db.session.add(user)
