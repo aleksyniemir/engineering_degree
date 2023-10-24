@@ -1,21 +1,33 @@
-from flask import Flask, jsonify, request, make_response
-from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
-from marshmallow import fields, ValidationError
-from flask_sqlalchemy import SQLAlchemy
+from marshmallow import fields
 from flask_marshmallow import Marshmallow
-from flask_cors import CORS
-from datetime import datetime, timedelta
-from dotenv import load_dotenv
-from functools import wraps
-from flask_marshmallow import Marshmallow
+from marshmallow import validate
 
 ma = Marshmallow()
 
-class UserSchema(ma.Schema):
-    nick = fields.Str()
-    email = fields.Str()
-    password = fields.Str()
+class UserSchemaBase(ma.Schema):
+    id = fields.Int(dump_only=True)
+    nick = fields.Str(required=True, validate=validate.Length(min=1), error_messages={"required": "Nickname is required"})
+    email = fields.Str(required=True, error_messages={"required": "Email is required"})
 
-user_schema = UserSchema()  
+class UserSchema(UserSchemaBase): ...
+
+class UserSchemaPrivate(UserSchemaBase):
+    password = fields.Str(required=True, validate=validate.Length(min=8), error_messages={"required": "Password is required"})
+
+class UserSchemaCreate(UserSchemaBase):
+    password = fields.Str(required=True, validate=validate.Length(min=8), error_messages={"required": "Password is required"})
+
+class UserSchemaUpdate(ma.Schema):
+    nick = fields.Str(validate=validate.Length(min=1))
+    email = fields.Str() 
+    password = fields.Str(validate=validate.Length(min=8))
+
+class UserSchemaAuth(UserSchemaBase):
+    token = ma.Str()
+
+user_schema = UserSchema()
+user_schema_create = UserSchemaCreate()
+user_schema_private = UserSchemaPrivate()
+user_schema_update = UserSchemaUpdate()  
+user_schema_auth = UserSchemaAuth()  
 users_schema = UserSchema(many=True)
