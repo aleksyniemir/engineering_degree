@@ -60,10 +60,17 @@ def update_user(id):
         print(err.valid_data)
         return jsonify(err.messages), 400
     
+    if not validators.check_email_regex(user_dict["email"]):
+        return jsonify({"error": "Not a valid email address"}), 400
+        
     user = crud.update_user(db.session, id, user_dict)
     return user_schema_update.jsonify(user)
 
 @bp.route("/delete_user/<id>", methods = ['DELETE'])
 def delete_user(id):
+    user = crud.get_user_by_id(db.session, id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    
     message = crud.delete_user(db.session, id)
     return message

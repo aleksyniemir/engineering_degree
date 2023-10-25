@@ -17,12 +17,6 @@ def get_user_by_id(session, id):
     #user = user_schema.dump(user_model)
     return user
 
-def get_user_by_id_with_password(session, id):
-    stmt = select(User).where(User.id==id)
-    user = session.scalar(stmt)
-    # user = user_schema_private.dump(user_model)
-    return user
-
 def get_user_by_nick(session, nick):
     stmt = select(User).where(User.nick==nick)
     user = session.scalar(stmt)
@@ -43,10 +37,10 @@ def add_user(session, user_dict):
     return user
 
 def update_user(session, id, user_dict):
-    user = get_user_by_id_with_password(session, id)
-    if not user:
-        return jsonify({'error': 'User not found'}), 404
-
+    user = get_user_by_id(session, id)
+    if user is None:
+        return None
+    
     if "nick" in user_dict:
         user.nick = user_dict["nick"]
     if "email" in user_dict:
@@ -60,9 +54,6 @@ def update_user(session, id, user_dict):
 
 def delete_user(session, id):
     user = get_user_by_id(session, id)
-    if not user:
-        return jsonify({'error': 'User not found'}), 404
-
     session.delete(user)
     session.commit()
     return jsonify({'message': 'User deleted'})

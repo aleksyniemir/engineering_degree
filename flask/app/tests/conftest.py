@@ -4,12 +4,10 @@ from app import create_app, db
 @pytest.fixture()
 def app():
     app = create_app(test_config=True)
-    yield app
     with app.app_context():
         db.create_all()  # You might want to use something like Flask-Migrate to handle database creation
         yield app
         db.session.remove()
-        db.drop_all()
 
     
 @pytest.fixture()
