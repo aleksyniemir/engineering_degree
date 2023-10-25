@@ -1,15 +1,11 @@
 from flask import jsonify, request, Blueprint
 from marshmallow import ValidationError
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select
-import re
 
 from app import db
 
-from app.models.user import User
 import app.crud.user as crud
-from app.schemas.user import *
 import app.utils.validators as validators
+from app.schemas.user import *
 
 bp = Blueprint('user', __name__, url_prefix='/user')
 

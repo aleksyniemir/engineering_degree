@@ -1,9 +1,6 @@
 from sqlalchemy import select
 from app.models.user import User
-from app.schemas.user import user_schema, user_schema_update, user_schema_create, users_schema, user_schema_private
 from flask import jsonify
-from app import db
-import re
 
 def get_users(session):
     stmt = select(User)
