@@ -5,32 +5,27 @@ from flask import jsonify
 def get_users(session):
     stmt = select(User)
     users = session.scalars(stmt).all()
-    #users_serialized = users_schema.dump(users_models)
     return users
 
 def get_user_by_id(session, id):
     stmt = select(User).where(User.id==id)
     user = session.scalar(stmt)
-    #user = user_schema.dump(user_model)
     return user
 
 def get_user_by_nick(session, nick):
     stmt = select(User).where(User.nick==nick)
     user = session.scalar(stmt)
-    #user = user_schema.dump(user_model)
     return user
 
 def get_user_by_email(session, email):
     stmt = select(User).where(User.email==email)
     user = session.scalar(stmt)
-    # user = user_schema.dump(user_model)
     return user
 
 def add_user(session, user_dict):
-    user = User(**user_dict)
+    user = User(nick=user_dict["nick"], email=user_dict["email"], password=user_dict["password"])
     session.add(user)
     session.commit()
-    #user = user_schema_create.dump(user) 
     return user
 
 def update_user(session, id, user_dict):
