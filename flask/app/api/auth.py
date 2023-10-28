@@ -1,58 +1,48 @@
 from flask import jsonify, request, Blueprint, current_app, g
-from datetime import datetime, timedelta
-from functools import wraps
-import jwt
 
 from app import db
 import app.crud.user as crud
+import app.utils.auth as auth
+import app.utils.validators as validators
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        # TODO get token from header correctly
-        token = request.args.get('token') 
-        if not token:
-            return jsonify({"message": "Token is missing!"}), 401
-        
-        try:
-            data = jwt.decode(token, current_app.config['SECRET_KEY'])
-            g.current_user_nick = data['user']
-        except:
-            return jsonify({"message": "Token is invalid!"}), 401
-        
-        return f(*args, **kwargs)
-    return decorated
-
-def get_current_user():
-    user = crud.get_user_by_nick(db.session, g.current_user_nick)
-    return user
-
 @bp.route("/login", methods = ['POST'])
 def login():
-    auth = request.json
-    if not auth or not auth['nick'] or not auth['password']:
+    user_dict = request.json
+    if not user_dict or not user_dict['nick'] or not user_dict['password']:
        return jsonify({"message": "Could not verify!", "WWW-Authenticate": "Basic auth='Login required'"}), 401
     
-    user = crud.get_user_by_nick(db.session, auth['nick'])
+    user = crud.get_user_by_nick(db.session, user_dict['nick'])
     if not user:
         return jsonify({"message": "Invalid user or password!"}), 401
-
-    if not user.verify_password(auth['password']):
+    if not user.verify_password(user_dict['password']):
         return jsonify({"message": "Invalid user or password!"}), 401
 
-    token = jwt.encode(
-        {
-            'user': auth['nick'], 
-            'exp': datetime.utcnow() + timedelta(minutes=100000000)
-        }, 
-        current_app.config['SECRET_KEY']
-        )
+    token = auth.get_token(user_dict["nick"])
     return jsonify({'token': token})
 
-bp.route("/sign_up")
-def sign_up(): ...
 
-@bp.route("/logout")
-def logout(): ...
+@bp.route("/sign_up", methods=['POST'])
+def sign_up():
+    user_dict = request.json
+    if not user_dict or not user_dict['nick'] or not user_dict['password'] or not user_dict['email']:
+        return jsonify({"message": "Missing required fields!"}), 400
+
+    if not validators.check_email_regex(user_dict["email"]):
+        return jsonify({"error": "Not a valid email address"}), 400
+        
+    if crud.get_user_by_email(db.session, user_dict["email"]):
+        return jsonify({"error": "Email already in use"}), 400
+
+    if crud.get_user_by_nick(db.session, user_dict["nick"]):
+        return jsonify({"error": "Nickname already in use"}), 400
+    
+    crud.add_user(db.session, user_dict)
+    token = auth.get_token(user_dict["nick"])
+    return jsonify({'message': 'User registered successfully!', 'token': token}), 201
+
+@bp.route("/logout", methods=['POST'])
+def logout():
+    #TODO invalidate token
+    return jsonify({"message": "Logged out successfully!"}), 200

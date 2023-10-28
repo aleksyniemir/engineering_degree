@@ -10,12 +10,16 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         # TODO get token from header correctly
-        token = request.args.get('token') 
+        token = request.authorization.token
         if not token:
             return jsonify({"message": "Token is missing!"}), 401
         
         try:
-            data = jwt.decode(token, current_app.config['SECRET_KEY'])
+            data = jwt.decode(
+                jwt=token, 
+                key=current_app.config['SECRET_KEY'],
+                algorithms=["HS256"]
+                )
             g.current_user_nick = data['user']
         except:
             return jsonify({"message": "Token is invalid!"}), 401
@@ -35,6 +39,17 @@ def check_if_admin():
 
 def check_if_admin_or_current_user(user_id: int):
     user = get_current_user()
-    if user.nick == "admin" or user.id == user_id:
+    if user.nick == "admin" or user.id == int(user_id):
         return user
     return None
+
+def get_token(nick: str):
+    token = jwt.encode(
+        {
+            'user': nick, 
+            'exp': datetime.utcnow() + timedelta(minutes=100000000)
+        }, 
+        current_app.config['SECRET_KEY'],
+        algorithm="HS256"
+        )
+    return token
