@@ -16,7 +16,6 @@ def create_app(test_config=None):
     app = Flask(__name__)
     CORS(app)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://aleksyniemir:haslo123@localhost:5432/inzynierka_db'
     if test_config is None:
         app.config.from_object('app.config.DevelopmentConfig')
     else:

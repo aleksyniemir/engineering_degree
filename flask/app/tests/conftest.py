@@ -11,30 +11,30 @@ from app import create_app, db
 def app():
     app = create_app(test_config=True)
     with app.app_context():
-        db.create_all()  
+        db.create_all()
+        # adding test user
+        crud.add_user(
+            db.session, 
+            {   "nick":"test_user", 
+                "email":"test_email@email.com", 
+                "password":"test_password"}
+            )
+        # adding test admin
+        crud.add_user(
+            db.session, 
+            {   "nick":"admin", 
+                "email":"admin@admin.com", 
+                "password":"test_password"}
+            )
         yield app
         db.session.remove()
+        db.drop_all()
 
     
 @pytest.fixture()
 def client(app):
     return app.test_client()
 
-# @pytest.fixture()
-# def headers():
-#     random_uid = str(randint(0,999999))
-#     token = jwt.encode(
-#         {
-#             'user': "test_user_" + random_uid, 
-#             'exp': datetime.utcnow() + timedelta(minutes=100000000)
-#         }, 
-#         current_app.config['SECRET_KEY']
-#         )
-    
-#     headers = {
-#         'Authorization': f'Bearer {token}'
-#     }
-#     return headers
 
 @pytest.fixture()
 def headers():
