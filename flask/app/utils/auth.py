@@ -9,11 +9,10 @@ import app.crud.user as crud
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        # TODO get token from header correctly
         token = request.authorization.token
-        if not token:
+        if not request.authorization.token:
             return jsonify({"message": "Token is missing!"}), 401
-        
+
         try:
             data = jwt.decode(
                 jwt=token, 
