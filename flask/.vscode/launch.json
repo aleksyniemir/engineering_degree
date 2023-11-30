@@ -9,16 +9,17 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/app/main.py",
-            "cwd": "${workspaceFolder}/app",
+            "cwd": "${workspaceFolder}",
+            // "module": "flask",
             "env": {
+                "FLASK_APP": "app/main.py",
                 "PYTHONPATH": "${workspaceFolder}",
-                "FLASK_APP": "app.main",
+                "FLASK_DEBUG": "1",
             },
             "args": [
-                "--app",
-                "app.main",
                 "run",
-                "--no-debugger"
+                "--no-debugger",
+                "--no-reload"
             ],
         }
     ]

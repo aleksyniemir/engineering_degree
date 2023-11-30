@@ -1,1 +1,3 @@
 curl -X POST -H "Content-Type: application/json" -d '{"nick":"test_user", "email":"test_email@email.com", "password":"test_password"}'  http://localhost:5000/user/add_user
+
+export PYTHONPATH="${PYTHONPATH}:/home/aleksyniemir/Documents/praca_inżynierska/aplikacja/flask"
