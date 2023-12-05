@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 
 const Login = ({ onLoginSuccess }) => { 
-    const [username, setUsername] = useState('');
+    const [nick, setNick] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
         try {
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('http://localhost:5000/auth/login', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json' 
                 },
                 body: JSON.stringify({ 
-                    username, 
+                    nick, 
                     password 
                 }),
             });
@@ -37,9 +37,9 @@ const Login = ({ onLoginSuccess }) => {
         <form onSubmit={handleSubmit} className="login-form">
             <input 
                 type="text" 
-                value={username} 
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Username" 
+                value={nick} 
+                onChange={(e) => setNick(e.target.value)}
+                placeholder="nick" 
             />
             <input 
                 type="password" 

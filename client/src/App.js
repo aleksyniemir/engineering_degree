@@ -2,7 +2,7 @@
 import './App.css';
 import {useState, useEffect} from 'react'
 import UserList from './components/UserList'
-import Login from './components/Login'
+import Login from './components/auth/Login'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,28 +11,33 @@ function App() {
     setIsLoggedIn(true);
   };
 
-  const [users, setUsers] = useState([])
+  // const [users, setUsers] = useState([])
   
-  useEffect(() => {
-    fetch('http://127.0.0.1:5000/get_users', {
-      'method': 'GET',
-      headers: {
-        'Content-Type': "application/json"
-      }
-    })
-    .then(resp => resp.json())
-    .then(resp => setUsers(resp))
-    .catch(error => console.log(error))
-  }, [])
+  // useEffect(() => {
+  //   fetch('http://localhost:5000/users/get_users', {
+  //     'method': 'GET',
+  //     headers: {
+  //       'Content-Type': "application/json",
+  //       'Authorization': `Bearer ${localStorage.getItem('token')}`
+  //     }
+  //   })
+  //   .then(resp => resp.json())
+  //   .then(resp => setUsers(resp))
+  //   .catch(error => console.log(error))
+  // }, [])
+
   
+  //      <UserList users = {users}/>  
   return (
     <div className="App">
       {isLoggedIn ? ( 
         <>
           <h1> Flask and recat app</h1>
-          <UserList users = {users}/>
+          <UserList/>
+    
         </>
       ) : (
+        
         <Login onLoginSuccess={handleLoginSuccess} />
       )}
     </div>
@@ -40,3 +45,33 @@ function App() {
 }
 
 export default App;
+
+// import React, { useState } from 'react';
+// import {
+//   BrowserRouter as Router,
+//   Routes,
+//   Route,
+//   Navigate,
+// } from 'react-router-dom';
+// import Login from './Login';
+// import Homepage from './Homepage';
+
+// function App() {
+//   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+//   const handleLoginSuccess = () => {
+//     setIsLoggedIn(true);
+//   };
+
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/" element={isLoggedIn ? <Navigate to="/homepage" /> : <Login onLoginSuccess={handleLoginSuccess} />} />
+//         <Route path="/homepage" element={isLoggedIn ? <Homepage /> : <Navigate to="/" />} />
+//       </Routes>
+//     </Router>
+//   );
+// }
+
+// export default App;
+
