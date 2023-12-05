@@ -1,7 +1,22 @@
+/* --primary-100:#1F3A5F;
+--primary-200:#4d648d;
+--primary-300:#acc2ef;
+--accent-100:#3D5A80;
+--accent-200:#cee8ff;
+--text-100:#FFFFFF;
+--text-200:#e0e0e0;
+--bg-100:#0F1C2E;
+--bg-200:#1f2b3e;
+--bg-300:#374357;
+   */
+
 .game-page {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    background: #ffffff;
+
+    /*background: #0F1C2E;*/
   }
   
   .game-header {
@@ -17,8 +32,13 @@
   }
   
   .game-description {
-    flex: 3; /* Adjust the flex value to change the width of the description */
+    flex: 3; 
     margin-right: 10px;
+    border-radius: 20px;
+    background: #292b2c;
+    text-align: justify;
+    -webkit-text-fill-color: #FFFFFF;
+    padding: 10px 15px 10px 15px;
   }
   
   .game-sidebar {
@@ -28,17 +48,36 @@
   }
   
   .game-photo img {
-    width: 100%;
-    height: auto;
+    width: 256px;
+    height: 256px;
     margin-bottom: 10px;
+    border-radius: 20px;
   }
   
   .game-stats {
-    border: 1px solid #000;
-    padding: 10px;
+    flex: 1;
+    width: 256px; 
+    border-radius: 20px;
+    background: #292b2c;
+    text-align: justify;
+    -webkit-text-fill-color: #FFFFFF;
+    padding: 10px 15px 10px 15px;
   }
   
   .game-input {
     padding: 10px;
+    background: #292b2c;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px
+  }
+
+  .game-input input {
+    width: 100%;         /* Makes the input stretch to the full width of its parent */
+    box-sizing: border-box; /* Includes padding and border in the element's total width */
+    border-radius: 47px;    /* Optional: If you want the input to have rounded corners */
+    padding: 12px;          /* Optional: Adjust the padding to your liking */
+    /* Add any additional styling you want for the input, such as border, font, etc. */
   }
   
