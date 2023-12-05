@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import {
+    MDBInput,
+  }
+  from 'mdb-react-ui-kit';
 
-const Login = ({ onLoginSuccess }) => { 
+const Login = ({ onLoginSuccess }) => {
     const [nick, setNick] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
         try {
             const response = await fetch('http://localhost:5000/auth/login', {
                 method: 'POST',
@@ -30,26 +33,32 @@ const Login = ({ onLoginSuccess }) => {
         } catch (error) {
             console.error('An error occoured', error);
         }
-
-    }
+    };
 
     return (
-        <form onSubmit={handleSubmit} className="login-form">
-            <input 
-                type="text" 
+        
+        <form onSubmit={handleSubmit} >
+            <MDBInput 
+                onChange={(e) => setNick(e.target.value)} 
                 value={nick} 
-                onChange={(e) => setNick(e.target.value)}
-                placeholder="nick" 
-            />
-            <input 
-                type="password" 
+                wrapperClass='mb-4' 
+                label='Username'  
+                type='text'
+                />
+            <MDBInput 
+                onChange={(e) => setPassword(e.target.value)} 
                 value={password} 
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password" 
-            />
-            <button type="submit">Login</button>
+                wrapperClass='mb-4' 
+                label='Password'  
+                type='password'
+                />          
+            <button 
+                class="ripple ripple-surface ripple-surface-light btn btn-dark mb-4" 
+                type="submit">
+                    Sign in
+            </button>
         </form>
     );
-}
+};
 
 export default Login;
