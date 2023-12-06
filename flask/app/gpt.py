@@ -7,14 +7,8 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 prompt = '''
-You are performing a function of a text game engine, 
-which generates a JSON with the informations about 
-the game. Don't generate any additional text, such 
-as "Certainly! We'll begin our game set...", generate 
-only the desired JSON file. Do not write anything 
-outside the JSON file. Write only JSON. Follow the rules below.
-
-Output JSON: ```
+You are a computer program which imitates a game master, designed to output only JSON file:
+```
 {
 "Description": "X",
 "Scene": "X",
@@ -27,6 +21,7 @@ Output JSON: ```
 }
 ```
 
+Follow the rules below.
 Main rules:
 1. Play the game in turns, starting with you.
 2. Always wait for the user to give you a response.
