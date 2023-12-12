@@ -22,12 +22,13 @@ const Login = ({ onLoginSuccess }) => {
                 }),
             });
 
+            const data = await response.json();
             if (response.ok) {
-                const data = await response.json();
                 localStorage.setItem('token', data.token);
                 console.log('Success:', data);
                 onLoginSuccess();
             } else {
+                alert(data.message)
                 console.log('Login failed.')
             }
         } catch (error) {

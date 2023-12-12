@@ -10,7 +10,7 @@ function LoginPage({ onLoginSuccess }) {
       <Login onLoginSuccess={onLoginSuccess} />
 
       <div className="text-center">
-        <p>Not a member? <a href="#!">Register</a></p>
+        <p>Not a member? <a href="/register">Register</a></p>
       </div>
       
     </MDBContainer>
