@@ -14,8 +14,7 @@ function GamePage() {
         <div class="container">
             <div class="left-container">
                 <div className="game-description">
-                  <p>Here goes the dynamic description of the game situation...Here goes the dynamic description of the game situation...Here goes the dynamic description of the game situation...Here goes the dynamic description of the game situation...Here goes the dynamic description of the game situation...Here goes the dynamic description of the game situation...Here goes the dynamic description of the game situation...Here goes the dynamic description of the game situation...Here goes the dynamic description of the game situation...</p>
-                </div>
+                  <p>Welcome to the world of Dune! You find yourself on the desert planet Arrakis, known as the only source of the invaluable spice melange in the universe. As a brave adventurer, your goal is to survive and thrive in this harsh and treacherous environment, navigating the political intrigue and fierce battles for control of the spice. Be cautious, for danger lurks around every corner, but riches and power also await those who can seize the opportunities presented to them.</p>              </div>
               <div class="bottom-container">
                 <div className="game-input"> 
                   <input
@@ -26,12 +25,19 @@ function GamePage() {
                   />
                 </div>
                 <div className="game-photo">
-                  <img src={require("/home/aleksyniemir/Documents/praca_inżynierska/aplikacja/client/src/example_img.png")} alt="" />
+                  <img src={require("/home/aleksyniemir/Documents/studies/praca_inżynierska/aplikacja/client/src/example_img.png")} alt="" />
                 </div>
               </div>
             </div>
             <div className="game-stats">
-                  <h2>Stats</h2>
+                  
+                  "Health": "20/20" <br></br>
+                  "Weather": "Hot and dry" <br></br>
+                  "Location": "Arrakis" <br></br>
+                  "Inventory": "Nothing" <br></br>
+                  "Quests": "None" <br></br>
+                  "Possible actions": <br></br>
+                  ["Explore the nearby spice mining operations"<br></br> "Search for a group of Fremen to join"<br></br> "Find shelter from the relentless sun"]
                 </div>
             </div>
         </body>

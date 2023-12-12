@@ -13,13 +13,13 @@
    .game-page {
      background: #ffffff;
      margin-bottom: 10px;
-   }
-  .game-header {
-     display: flex;
-     justify-content: space-between;
-     padding: 10px;
-   }
-  .container {
+    }
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+    .container {
     display: flex;
   }
   .left-container {
@@ -39,7 +39,7 @@
   }
   .game-stats {
     width: 256px; 
-    height: 718px;
+    height: 512px;
     border-radius: 20px;
     background: #292b2c;
     -webkit-text-fill-color: #FFFFFF;
