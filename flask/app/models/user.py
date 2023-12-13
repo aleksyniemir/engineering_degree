@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
-
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import List
 
 from app import db, bcrypt
 
@@ -11,7 +11,7 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String(63), nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    # games = db.relationship('Game', back_populates='user')
+    games: Mapped[List["Game"]] = relationship("Game", back_populates="user")
 
     @property
     def password(self):
@@ -24,4 +24,5 @@ class User(db.Model):
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
     
+from app.models.game import Game        
     

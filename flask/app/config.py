@@ -10,7 +10,6 @@ class Config(object):
 
 class DevelopmentConfig(Config): 
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
-
     TESTING = False
 
 class TestConfig(Config): 
