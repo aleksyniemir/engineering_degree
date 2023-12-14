@@ -5,11 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = OpenAI(
-    organization="org-M3Ibgl6TbM8lwc9aKuANBNsz",
-    api_key = os.getenv("OPENAI_API_KEY")
-) 
-
 prompt = '''
 You are a computer program which imitates a game master, designed to output only JSON file:
 ```
@@ -45,18 +40,35 @@ Rules for creation of the world and the setting:
 Start the game.
 '''
 
-completion = client.chat.completions.create(
-  model="gpt-3.5-turbo",
-  messages=[
-    {"role": "system", "content": prompt}
-    ]
-)
+def initialize_gpt_client():
+  client = OpenAI(
+      organization="org-M3Ibgl6TbM8lwc9aKuANBNsz",
+      api_key = os.getenv("OPENAI_API_KEY")
+  ) 
+  return client
 
-message = json.loads(completion.choices[0].message.content)
+def generate_game(client):
+  client = initialize_gpt_client()
+  completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+      {"role": "system", "content": prompt}
+      ]
+  )
+  first_message_json = json.loads(completion.choices[0].message.content)
+  return first_message_json
+
+def generate_game_mock(client):
+  first_message_json = {'Description': 'You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.', 'Scene': 'The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.', 'Health': '20/20', 'Weather': 'Hot and dry', 'Location': 'Arrakis (Dune)', 'Inventory': 'Empty', 'Quests': 'None', 'Possible actions': 'Explore the surroundings, look for a settlement, search for water'}
+  return first_message_json
+
 #print(completion.choices[0].message)
 
 # completion.choices[0].message.content
 # '{\n"Description": "You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.",\n"Scene": "The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.",\n"Health": "20/20",\n"Weather": "Hot and dry",\n"Location": "Arrakis (Dune)",\n"Inventory": "Empty",\n"Quests": "None",\n"Possible actions": "Explore the surroundings, look for a settlement, search for water"\n}'
+
+#json
+# {'Description': 'You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.', 'Scene': 'The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.', 'Health': '20/20', 'Weather': 'Hot and dry', 'Location': 'Arrakis (Dune)', 'Inventory': 'Empty', 'Quests': 'None', 'Possible actions': 'Explore the surroundings, look for a settlement, search for water'}
 
 # completion_1 = client.chat.completions.create(
 #   model="gpt-3.5-turbo",
