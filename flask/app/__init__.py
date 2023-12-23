@@ -23,9 +23,10 @@ def create_app(test_config=None):
 
     from app.api.user import bp as user_bp
     from app.api.auth import bp as auth_bp
+    from app.api.gpt import bp as gpt_bp
     app.register_blueprint(user_bp, url_prefix='/user') 
     app.register_blueprint(auth_bp, url_prefix='/auth') 
-
+    app.register_blueprint(gpt_bp, url_prefix='/gpt')
 
     db.init_app(app)
     ma.init_app(app)

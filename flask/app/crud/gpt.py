@@ -1,7 +1,7 @@
 from app.models.game import Game
 from sqlalchemy import select
 
-from app.schemas.game import   game_create_schema
+from app.schemas.game import   game_create_schema, GameSchemaCreate
 from app import db
 
 def get_game_by_id(session: db.session, id: int):
@@ -9,14 +9,15 @@ def get_game_by_id(session: db.session, id: int):
     game = session.scalar(stmt)
     return game
 
-def add_game(session, game_dict):
-    game_schema = game_create_schema.load(game_dict)
-    game = Game(**game_schema)
+def add_game(session, game_data: GameSchemaCreate):
+    # game_schema = game_create_schema.load(game_dict)
+    game = Game(**game_data)
     session.add(game)
     session.commit()
     return game
 
 def update_game(
+        # TODO change to game_schema
         session: db.session,
         json: dict, 
         game_id: int,

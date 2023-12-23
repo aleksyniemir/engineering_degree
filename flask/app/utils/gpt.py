@@ -3,6 +3,7 @@ import json
 from openai import OpenAI
 from dotenv import load_dotenv
 from app.schemas.game import game_create_schema, game_update_schema
+from marshmallow import ValidationError
 
 load_dotenv()
 
@@ -61,20 +62,28 @@ def generate_game(user_id: int, game_environment: str):
   #     ]
   # )
   game = {
-    'Description': 'You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.', 
-    'Scene': 'The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.', 
-    'Health': '20/20', 
-    'Weather': 'Hot and dry', 
-    'Location': 'Arrakis (Dune)', 
-    'Inventory': 'Empty', 
-    'Quests': 'None', 
-    'Possible actions': 'Explore the surroundings, look for a settlement, search for water'}
+    'description': 'You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.', 
+    'scene': 'The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.', 
+    'health': '20/20', 
+    'weather': 'Hot and dry', 
+    'location': 'Arrakis (Dune)', 
+    'inventory': 'Empty', 
+    'quests': 'None', 
+    'possible_actions': 'Explore the surroundings, look for a settlement, search for water',
+    "user_id": user_id, 
+    "title": game_environment,
+    "prompt": prompt,
+    "turn_number": 1,
+    'photo': b'\x00\x01\x02\x03'
+
+    }
   #first_turn = json.loads(completion.choices[0].message.content)
-  game["user_id"] = user_id
-  game["title"] = game_environment
-  game["prompt"] = prompt
-  game["turn_number"] = 1
-  return game
+  try:
+    game_data = game_create_schema.load(game)
+  except ValidationError as err:
+    print(err.messages)
+    #TODO ask the user for input again
+  return game_data
 
 
 
