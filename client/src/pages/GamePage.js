@@ -5,7 +5,8 @@ function GamePage() {
     const [userInput, setUserInput] = useState('');
 
     return (
-      <body class="game-page">
+      <div>
+      <div className="game-page">
         <header className="game-header">
           <button class="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  onClick={() => {}}>New game</button>
           <button class="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  onClick={() => {}}>Saved games</button>
@@ -40,7 +41,8 @@ function GamePage() {
                   ["Explore the nearby spice mining operations"<br></br> "Search for a group of Fremen to join"<br></br> "Find shelter from the relentless sun"]
                 </div>
             </div>
-        </body>
+        </div>
+        </div>
       );
 
 }

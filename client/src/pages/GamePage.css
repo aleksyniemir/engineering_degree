@@ -11,8 +11,11 @@
    */
 
    .game-page {
-     background: #ffffff;
+     position: relative;
+     background-color: transparent;
      margin-bottom: 10px;
+     overflow: hidden; 
+     z-index: 2;
     }
     .game-header {
       display: flex;
