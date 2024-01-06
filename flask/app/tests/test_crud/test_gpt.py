@@ -1,6 +1,6 @@
 import app.crud.gpt as crud 
 from app.models.game import Game
-from app.schemas.game import game_create_schema
+from app.schemas.game import game_schema_create
 from app import db
 
 def test_add_game(client):
@@ -19,7 +19,7 @@ def test_add_game(client):
         'photo': b'\x00\x01\x02\x03'
     }
 
-    game_data = game_create_schema.load(game)
+    game_data = game_schema_create.load(game)
     created_game = crud.add_game(db.session, game_data)
 
     game = crud.get_game_by_id(db.session, created_game.id)

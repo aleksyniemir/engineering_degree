@@ -4,7 +4,7 @@ from flask_marshmallow import Marshmallow
 ma = Marshmallow()
 
 class GameSchemaBase(ma.Schema):
-    game_id = fields.Int(dump_only=True)
+    id = fields.Int()
     photo = fields.Raw(required=True)
     prompt = fields.Str(required=True, validate=validate.Length(min=1), error_messages={"required": "Prompt is required"})
     description = fields.Str(required=True, validate=validate.Length(min=1), error_messages={"required": "Description is required"})
@@ -34,9 +34,16 @@ class GameSchemaUpdate(ma.Schema):
     location = fields.Str()
     weather = fields.Str()
 
-class GameSchemaForFrontend(GameSchemaBase):
-    ...
+class GameSchemaSimplified(ma.Schema):
+    id = fields.Int()
+    title = fields.Str()
+    turn_number = fields.Int()
 
-game_create_schema = GameSchemaCreate()
-game_update_schema = GameSchemaUpdate()
+class GameSchemaForFrontend(GameSchemaBase):
+    photo: fields.Str(required=True)
+
+game_schema_create = GameSchemaCreate()
+game_schema_update = GameSchemaUpdate()
 game_schema_for_frontend = GameSchemaForFrontend()
+game_schema_simplified = GameSchemaSimplified()
+game_schemas_simplified = GameSchemaSimplified(many=True)

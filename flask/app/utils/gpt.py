@@ -1,13 +1,12 @@
 import os
 import json
+import base64
 from openai import OpenAI
 from dotenv import load_dotenv
-from app.schemas.game import game_create_schema, game_update_schema
+from app.schemas.game import game_schema_create, game_schema_update
 from marshmallow import ValidationError
 
 load_dotenv()
-
-
 
 def initialize_gpt_client():
   client = OpenAI(
@@ -77,15 +76,17 @@ def generate_game(user_id: int, game_environment: str):
     'photo': b'\x00\x01\x02\x03'
 
     }
-  #first_turn = json.loads(completion.choices[0].message.content)
+  #game = json.loads(completion.choices[0].message.content)
   try:
-    game_data = game_create_schema.load(game)
+    game_data = game_schema_create.load(game)
   except ValidationError as err:
     print(err.messages)
     #TODO ask the user for input again
   return game_data
 
-
+def get_next_turn(): 
+  client = initialize_gpt_client()
+  return
 
 #print(completion.choices[0].message)
 
