@@ -17,38 +17,46 @@ function App() {
   useEffect(() => {
     const checkToken = () => {
       const token = localStorage.getItem('token');
+      console.log("check_token function");
       if (token) {
+        console.log("if token")
         try {
           let jwt_token_decoded = jwtDecode(token);
           const currentTime = Date.now().valueOf() / 1000;
-          if (currentTime > jwt_token_decoded.exp) {
+          if (currentTime < jwt_token_decoded.exp) {
+            setIsLoggedIn(true);
+            console.log("current time < jwt_token_decoded.exp ( good)");
+          } else {
+            console.log("current time > jwt_token_decoded.exp (bad)");
             setIsLoggedIn(false);
             localStorage.removeItem('token');
-          } else {
-            setIsLoggedIn(true);
           }
         } catch (e) {
-          // handle any errors, such as invalid token
           setIsLoggedIn(false);
+          console.log("catch");
           localStorage.removeItem('token');
         }
+      } else {
+        console.log("if not token");
+        setIsLoggedIn(false);
       }
     };
 
     checkToken();
-  }, [isLoggedIn]);
+  }, []); // Empty dependency array to run only on component mount
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
   };
 
+  console.log(localStorage.getItem('token'))
   return (
     <Router>
       <Routes>
         <Route path="/" element={isLoggedIn ? <Navigate to="/listed_games" /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/register" element={isLoggedIn ? <Navigate to="/listed_games" /> : <RegistrationPage />} />
-        <Route path="/gamepage" element={isLoggedIn ? <GamePage /> : <Navigate to="/" />} />
-        <Route path="/listed_games" element={isLoggedIn ? <ListedGamesPage /> : <Navigate to="/" />} />
+        <Route path="/gamepage/:gameId" element={isLoggedIn ? <GamePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
+        <Route path="/listed_games" element={isLoggedIn ? <ListedGamesPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );

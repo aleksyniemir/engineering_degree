@@ -83,7 +83,7 @@ const Register = ({ onRegistrationSuccess }) => {
             onChange={e => setRepeatPassword(e.target.value)}
         />
         <button 
-            class="ripple ripple-surface ripple-surface-light btn btn-dark mb-4" 
+            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4" 
             type="submit">
                 Register
         </button>
