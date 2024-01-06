@@ -48,7 +48,45 @@ function GamePage({ setIsLoggedIn }) {
       fetchGame();
     }, [gameId]); // Dependency array to fetch game data when gameId changes
 
-    
+
+
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+
+      if (!userInput) {
+        alert('Input cannot be empty');
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5000/gpt/get_next_turn/${gameId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          },
+          body: JSON.stringify({ input: userInput }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log(data);
+        if (!data || Object.keys(data).length === 0) {
+          alert('Game could not load properly.');
+          navigate('/listed_games');
+        } else {
+          setGameData(data);
+        }
+        
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+
 
     return (
       <div>
@@ -77,20 +115,22 @@ function GamePage({ setIsLoggedIn }) {
                     placeholder="Your command"
                   />
                 </div>
+                <div className="submit-game-input">
+                  <button className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4" onClick={handleSubmit}>Submit</button>
+                </div>
                 <div className="game-photo">
                   <img src={require("/home/aleksyniemir/Documents/studies/praca_inżynierska/aplikacja/client/src/example_img.png")} alt="" />
                 </div>
               </div>
             </div>
             <div className="game-stats">
-                  
-                  "Health": "20/20" <br></br>
-                  "Weather": "Hot and dry" <br></br>
-                  "Location": "Arrakis" <br></br>
-                  "Inventory": "Nothing" <br></br>
-                  "Quests": "None" <br></br>
-                  "Possible actions": <br></br>
-                  ["Explore the nearby spice mining operations"<br></br> "Search for a group of Fremen to join"<br></br> "Find shelter from the relentless sun"]
+                  Turn number: {gameData.turn_number} <br></br>
+                  Health: {gameData.health} <br></br>
+                  Weather: {gameData.weather} <br></br>
+                  Location: {gameData.location} <br></br>
+                  Inventory: {gameData.inventory} <br></br>
+                  Quests: {gameData.quests} <br></br>
+                  Possible actions: {gameData.possible_actions} <br></br>
                 </div>
             </div>
         </div>
