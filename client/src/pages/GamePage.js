@@ -35,13 +35,20 @@ function GamePage({ setIsLoggedIn }) {
           });
           const data = await response.json();
           console.log(data);
-          setGameData(data);
+          if (!data || Object.keys(data).length === 0) {
+            alert('Game could not load properly.');
+            navigate('/listed_games');
+          } else {
+            setGameData(data);
+          }
         } catch (error) {
           console.error('Error fetching game:', error);
         }
       }
       fetchGame();
     }, [gameId]); // Dependency array to fetch game data when gameId changes
+
+    
 
     return (
       <div>
