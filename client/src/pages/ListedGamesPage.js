@@ -34,7 +34,21 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
 
     return (
         <div>
-            <Logout onLogout={() => setIsLoggedIn(false)} />
+            <header className="game-header">
+          <button 
+            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
+            onClick={() => navigate('/new_game')}
+          >
+            New game
+          </button>
+          <button 
+            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
+            onClick={() => navigate('/listed_games')} 
+          >
+            Saved games
+          </button>
+          <Logout onLogout={() => setIsLoggedIn(false)} />
+          </header>
             <h1>Listed Games</h1>
             <ul>
                 {games.map((game) => (

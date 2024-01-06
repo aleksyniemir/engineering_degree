@@ -52,12 +52,10 @@ function GamePage({ setIsLoggedIn }) {
 
     const handleSubmit = async (event) => {
       event.preventDefault();
-
       if (!userInput) {
         alert('Input cannot be empty');
         return;
       }
-
       try {
         const response = await fetch(`http://localhost:5000/gpt/get_next_turn/${gameId}`, {
           method: 'PUT',
@@ -80,7 +78,7 @@ function GamePage({ setIsLoggedIn }) {
         } else {
           setGameData(data);
         }
-        
+
       } catch (error) {
         console.error('Error:', error);
       }
@@ -92,7 +90,12 @@ function GamePage({ setIsLoggedIn }) {
       <div>
       <div className="game-page">
         <header className="game-header">
-          <button className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  onClick={() => {}}>New game</button>
+          <button 
+            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
+            onClick={() => navigate('/new_game')}
+          >
+            New game
+          </button>
           <button 
             className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
             onClick={() => navigate('/listed_games')} 

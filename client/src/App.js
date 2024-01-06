@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import GamePage from './pages/GamePage';
 import ListedGamesPage from './pages/ListedGamesPage';
+import NewGamePage from './pages/NewGamePage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -57,6 +58,7 @@ function App() {
         <Route path="/register" element={isLoggedIn ? <Navigate to="/listed_games" /> : <RegistrationPage />} />
         <Route path="/gamepage/:gameId" element={isLoggedIn ? <GamePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
         <Route path="/listed_games" element={isLoggedIn ? <ListedGamesPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
+        <Route path="/new_game" element={isLoggedIn ? <NewGamePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );
