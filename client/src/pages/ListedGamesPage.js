@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Logout from '../components/auth/Logout'
 import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+
 
 
 const ListedGamesPage = ({ setIsLoggedIn }) => {
@@ -34,21 +35,7 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
 
     return (
         <div>
-            <header className="game-header">
-          <button 
-            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
-            onClick={() => navigate('/new_game')}
-          >
-            New game
-          </button>
-          <button 
-            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
-            onClick={() => navigate('/listed_games')} 
-          >
-            Saved games
-          </button>
-          <Logout onLogout={() => setIsLoggedIn(false)} />
-          </header>
+            <Header/>
             <h1>Listed Games</h1>
             <ul>
                 {games.map((game) => (

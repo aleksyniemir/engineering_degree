@@ -1,24 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Logout from '../components/auth/Logout';
+import Header from '../components/Header';
 
-const NewGamePage = ({ setIsLoggedIn }) => {
+const NewGamePage = () => {
     const [inputValue, setInputValue] = useState('');
     const navigate = useNavigate();
-    const [gameData, setGameData] = useState({
-      description: '',
-      health: '',
-      id: null,
-      inventory: '',
-      location: '',
-      photo: '',
-      possible_actions: '',
-      quests: '',
-      scene: '',
-      turn_number: null,
-      weather: ''
-    });
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
@@ -45,9 +32,8 @@ const NewGamePage = ({ setIsLoggedIn }) => {
             console.log(`Did not receive gameData: ${data.id}`)
             navigate('/listed_games');
           } else {
-            setGameData(data);
-            console.log(`received gameData: ${gameData.id}`)
-            navigate(`/gamepage/${gameData.id}`);
+            console.log(`received gameData: ${data.id}`)
+            navigate(`/gamepage/${data.id}`);
           }
       } catch (error) {
           console.error('Error fetching games:', error);
@@ -57,21 +43,7 @@ const NewGamePage = ({ setIsLoggedIn }) => {
 
     return (
         <div>
-            <header className="game-header">
-          <button 
-            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
-            onClick={() => navigate('/new_game')}
-          >
-            New game
-          </button>
-          <button 
-            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
-            onClick={() => navigate('/listed_games')} 
-          >
-            Saved games
-          </button>
-          <Logout onLogout={() => setIsLoggedIn(false)} />
-          </header>
+            <Header/>
             <div>
                 <input type="text" value={inputValue} onChange={handleInputChange} />
                 <button onClick={handleSubmit}>Submit</button>

@@ -3,6 +3,8 @@ import React, {useEffect, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './GamePage.css'; 
 import Logout from '../components/auth/Logout'
+import Header from '../components/Header';
+
 
 
 function GamePage({ setIsLoggedIn }) {
@@ -89,21 +91,7 @@ function GamePage({ setIsLoggedIn }) {
     return (
       <div>
       <div className="game-page">
-        <header className="game-header">
-          <button 
-            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
-            onClick={() => navigate('/new_game')}
-          >
-            New game
-          </button>
-          <button 
-            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
-            onClick={() => navigate('/listed_games')} 
-          >
-            Saved games
-          </button>
-          <Logout onLogout={() => setIsLoggedIn(false)} />
-          </header>
+        <Header/>
         <div className="container">
             <div className="left-container">
                 <div className="game-description">
