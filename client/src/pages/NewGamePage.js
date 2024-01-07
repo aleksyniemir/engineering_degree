@@ -3,23 +3,56 @@ import { useNavigate } from 'react-router-dom';
 
 import Logout from '../components/auth/Logout';
 
-function NewGamePage({ setIsLoggedIn }) {
+const NewGamePage = ({ setIsLoggedIn }) => {
     const [inputValue, setInputValue] = useState('');
     const navigate = useNavigate();
-
+    const [gameData, setGameData] = useState({
+      description: '',
+      health: '',
+      id: null,
+      inventory: '',
+      location: '',
+      photo: '',
+      possible_actions: '',
+      quests: '',
+      scene: '',
+      turn_number: null,
+      weather: ''
+    });
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
     };
 
-    const handleSubmit = () => {
-        // fetch('/game_page/' + inputValue)
-        //     .then(() => {
-        //         history.push('/game_page/' + inputValue);
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
+    const handleSubmit = async () => {
+        if (!inputValue) {
+            alert('Input cannot be empty');
+            return;
+        }
+        try {
+          const response = await fetch('http://localhost:5000/gpt/begin_game', {
+          method: 'POST',
+          headers: { 
+              'Content-Type': 'application/json', 
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+          },
+          body: JSON.stringify({ game_environment: inputValue })
+          });
+          const data = await response.json();
+          console.log(data);
+          if (!data || Object.keys(data).length === 0) {
+            alert('Game could not load properly.');
+            console.log(`Did not receive gameData: ${data.id}`)
+            navigate('/listed_games');
+          } else {
+            setGameData(data);
+            console.log(`received gameData: ${gameData.id}`)
+            navigate(`/gamepage/${gameData.id}`);
+          }
+      } catch (error) {
+          console.error('Error fetching games:', error);
+      }
+        
     };
 
     return (

@@ -15,7 +15,7 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
                 headers: { 
                     'Content-Type': 'application/json', 
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
+                },
                 });
                 const data = await response.json();
                 setGames(data);
