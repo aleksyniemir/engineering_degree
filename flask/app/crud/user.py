@@ -23,7 +23,11 @@ def get_user_by_email(session, email):
     return user
 
 def add_user(session, user_dict):
-    user = User(nick=user_dict["nick"], email=user_dict["email"], password=user_dict["password"])
+    user = User(
+        nick=user_dict["nick"], 
+        email=user_dict["email"], 
+        password=user_dict["password"]
+    )
     session.add(user)
     session.commit()
     return user

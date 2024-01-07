@@ -6,7 +6,7 @@ from app import db
 
 class Game(db.Model): 
     __tablename__ = 'games'
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     title: Mapped[str]
     photo: Mapped[LargeBinary] = mapped_column(LargeBinary)

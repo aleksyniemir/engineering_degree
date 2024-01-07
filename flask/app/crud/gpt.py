@@ -15,9 +15,23 @@ def get_listed_games(session: db.session, user_id: int):
     games = session.scalars(stmt).all()
     return games
 
-def add_game(session, game_data: GameSchemaCreate):
+def add_game(session, game_data):
     # game_schema = game_schema_create.load(game_dict)
-    game = Game(**game_data)
+    game = Game(
+        user_id=game_data["user_id"],
+        title=game_data["title"],
+        photo=game_data["photo"],
+        prompt=game_data["prompt"],
+        description=game_data["description"],
+        scene=game_data["scene"],
+        turn_number=game_data["turn_number"],
+        possible_actions=game_data["possible_actions"],
+        quests=game_data["quests"],
+        inventory=game_data["inventory"],
+        health=game_data["health"],
+        location=game_data["location"],
+        weather=game_data["weather"]
+        )
     session.add(game)
     session.commit()
     return game
