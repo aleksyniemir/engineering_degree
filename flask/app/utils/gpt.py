@@ -19,10 +19,9 @@ def initialize_gpt_client():
 def generate_game(user_id: int, game_environment: str):
   client = initialize_gpt_client()
   
-  prompt = '''
+  prompt = f'''
   You are a computer program which imitates a game master, designed to output only JSON file:
-  ```
-  {
+  {{
   "description": "X",
   "scene": "X",
   "health": "X/20",
@@ -31,11 +30,11 @@ def generate_game(user_id: int, game_environment: str):
   "inventory": "X",
   "quests": "X",
   "possible_actions": "X",
-  }
-  ```
+  }}
+  The world is set in this environment: Rules for creation of the world:
+  1. Game universum: {game_environment} 
 
   Follow the rules below.
-  Main rules:
   1. Play the game in turns, starting with you.
   2. Always wait for the user to give you a response.
   3. Replace every "X" in the output with text.
@@ -47,25 +46,21 @@ def generate_game(user_id: int, game_environment: str):
   9. 'quests' can be created by the game or can be gained from talking to people. If empty, write 'None'.
   10. 'possible_actions' are representing what the player can do next. Every action should be very short. There should be three possible actions. It must be a string.
 
-  Rules for creation of the world:
-  1. Game universum: {game_environment} 
-  2. The game must end in an exciting manner when the game decides that it is the time for the end. When the game is over, inform the player about it in the description. The player can continue playing if he wishes to.
-
   Start the game.
   '''
 
-  # completion = client.chat.completions.create(
-  #   model="gpt-3.5-turbo",
-  #   messages=[
-  #     {"role": "system", "content": prompt}
-  #     ]
-  # )
-  # game = json.loads(completion.choices[0].message.content)
-  # game["user_id"] = user_id
-  # game["title"] = game_environment
-  # game["prompt"] = prompt
-  # game["turn_number"] = 1
-  # game['photo'] = b'\x00\x01\x02\x03'
+  completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+      {"role": "system", "content": prompt}
+      ]
+  )
+  game = json.loads(completion.choices[0].message.content)
+  game["user_id"] = user_id
+  game["title"] = game_environment
+  game["prompt"] = prompt
+  game["turn_number"] = 1
+  game['photo'] = b'\x00\x01\x02\x03'
 
   # MOCK DATA z palca
   # game = {
@@ -85,21 +80,22 @@ def generate_game(user_id: int, game_environment: str):
   #   }
 
   # MOCK DATA real
-  game = {
-  'description': "Welcome to the world of fantasy! In this magical kingdom of Elvoria, you find yourself surrounded by lush green landscapes, towering mountains, and mystical creatures. The air is filled with the sweet fragrance of blooming flowers and the gentle melody of birds chirping. As you explore the enchanting forests, you stumble upon a hidden trail leading to a secret waterfall. The cascading water shimmers under the sun's rays, creating a magical spectacle. You feel the rejuvenating mist on your skin and the peacefulness of the surroundings embrace you. Your adventure in Elvoria begins...",
-  'scene': 'You are standing in a serene forest, mesmerized by the beauty of the hidden waterfall.',
-  'health': '20/20',
-  'weather':  'Sunny',
-  'location': 'Enchanted Forest',
-  'inventory': 'None',
-  'quests': 'None',
-  'possible_actions': '1. Explore the forest. 2. Approach the waterfall. 3. Look for hidden treasures.',
-  'user_id': 1,
-  'title': 'harry potter',
-  'prompt': prompt,
-  'turn_number': 1,
-  'photo': b'\x00\x01\x02\x03'
-  }
+  # game = {
+  # 'description': "Welcome to the world of fantasy! In this magical kingdom of Elvoria, you find yourself surrounded by lush green landscapes, towering mountains, and mystical creatures. The air is filled with the sweet fragrance of blooming flowers and the gentle melody of birds chirping. As you explore the enchanting forests, you stumble upon a hidden trail leading to a secret waterfall. The cascading water shimmers under the sun's rays, creating a magical spectacle. You feel the rejuvenating mist on your skin and the peacefulness of the surroundings embrace you. Your adventure in Elvoria begins...",
+  # 'scene': 'You are standing in a serene forest, mesmerized by the beauty of the hidden waterfall.',
+  # 'health': '20/20',
+  # 'weather':  'Sunny',
+  # 'location': 'Enchanted Forest',
+  # 'inventory': 'None',
+  # 'quests': 'None',
+  # 'possible_actions': '1. Explore the forest. 2. Approach the waterfall. 3. Look for hidden treasures.',
+  # 'user_id': 1,
+  # 'title': 'harry potter',
+  # 'prompt': prompt,
+  # 'turn_number': 1,
+  # 'photo': b'\x00\x01\x02\x03'
+  # }
+
   try:
     game_schema_create.load(game)
   except ValidationError as err:
