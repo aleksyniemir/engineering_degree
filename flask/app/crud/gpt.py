@@ -4,6 +4,8 @@ from sqlalchemy import select
 
 from app.schemas.game import   game_schema_create, GameSchemaCreate
 from app import db
+from app.models.game import Game
+from sqlalchemy import delete
 
 def get_game_by_id(session: db.session, id: int):
     stmt = select(Game).where(Game.id==id)
@@ -50,3 +52,16 @@ def update_game(
     session.add(game)
     session.commit()
     return game
+
+
+def remove_game(session: db.session, game_id: int):
+    game = get_game_by_id(session, game_id)
+
+    if game is None:
+        return None
+    
+    stmt = delete(Game).where(Game.id == game_id)
+    session.execute(stmt)
+    session.commit()
+    return game
+

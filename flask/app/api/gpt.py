@@ -60,3 +60,17 @@ def get_next_turn(game_id: int):
     game = crud.update_game(db.session, game_id, command)
     game.photo = base64.b64encode(game.photo).decode('utf-8')
     return game_schema_for_frontend.jsonify(game)
+
+
+@bp.route("/remove_game/<game_id>", methods=['DELETE'])
+@token_required
+def remove_game(game_id: int):
+    user = auth.get_current_user()
+    game = crud.get_game_by_id(db.session, game_id)
+    if not game:
+        return jsonify({'error': 'Game not found'}), 404
+    if game.user_id != user.id:
+        return jsonify({"error": "You do not have enough permissions"}), 401
+    
+    crud.remove_game(db.session, game_id)
+    return jsonify({'message': 'Game removed successfully'})

@@ -53,3 +53,32 @@ def test_update_game():
     assert game.title == created_game.title
     assert game.photo == created_game.photo
     assert game.prompt == created_game.prompt
+
+
+
+def test_remove_game(client):
+    game_dict = {
+        'description': 'You are a brave adventurer...',
+        'scene': 'The sun beats down relentlessly...',
+        'health': '20/20',
+        'weather': 'Hot and dry',
+        'location': 'Arrakis (Dune)',
+        'inventory': 'Empty',
+        'quests': 'None',
+        'possible_actions': 'Explore the surroundings, look for a settlement, search for water',
+        'user_id': 1, 
+        'prompt': "test",
+        'title':'Dune Adventure',
+        'photo': b'\x00\x01\x02\x03',
+        'turn_number': 1
+    }
+    game_data = game_schema_create.load(game_dict)
+    created_game = crud.add_game(db.session, game_data)
+
+    game_id = created_game.id
+
+    crud.remove_game(db.session, game_id)
+
+    game = crud.get_game_by_id(db.session, game_id)
+    assert game is None
+

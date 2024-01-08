@@ -31,9 +31,10 @@ def generate_game(user_id: int, game_environment: str):
   "quests": "X",
   "possible_actions": "X",
   }}
-  The world is set in this environment: Rules for creation of the world:
-  1. Game universum: {game_environment} 
 
+  The world is set in this universum: {game_environment} .
+  Create the description in the environment above.
+  
   Follow the rules below.
   1. Play the game in turns, starting with you.
   2. Always wait for the user to give you a response.
