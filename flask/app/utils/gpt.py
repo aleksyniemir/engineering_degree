@@ -43,9 +43,10 @@ def generate_game(user_id: int, game_environment: str):
   5. 'scene' is a one sentence description of the things that the player sees based on description.
   6. 'health' is a number from 0 to 20. The player starts with 20. If it reaches 0 or below, the player dies and the game is over (He can start the game again. Game must write completly different story). The player can lose all of his health and die by doing risky stuff. The player can gain health by eating, drinking, or sleeping. 
   7. 'weather' and 'Location' is dependent on the description.
-  8. 'inventory' is a list of items that the player has. The player can gain items by picking them up or by buying them. The player can lose items by dropping them or by selling them. The player can use items by eating them, drinking them, or by using them. The player can only use items that he has in his inventory. If empty, write 'None'.
-  9. 'quests' can be created by the game or can be gained from talking to people. If empty, write 'None'.
-  10. 'possible_actions' are representing what the player can do next. Every action should be very short. There should be three possible actions. It must be a string.
+  8. 'location' is just a name of the place where the player is. 
+  9. 'inventory' is a list of items that the player has. The player can gain items by picking them up or by buying them. The player can lose items by dropping them or by selling them. The player can use items by eating them, drinking them, or by using them. The player can only use items that he has in his inventory. If empty, write 'None'.
+  10. 'quests' can be created by the game or can be gained from talking to people. If empty, write 'None'.
+  11. 'possible_actions' are representing what the player can do next. Every action should be very short. There should be three possible actions. It must be a string.
 
   Start the game.
   '''
