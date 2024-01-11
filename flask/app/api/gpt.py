@@ -43,7 +43,7 @@ def begin_game():
     game.photo = base64.b64encode(game.photo).decode('utf-8')
     return game_schema_for_frontend.jsonify(game)
 
-@bp.route("/get_next_turn/<game_id>", methods = ['POST'])
+@bp.route("/get_next_turn/<game_id>", methods = ['PUT'])
 @token_required
 def get_next_turn(game_id: int):
     try:

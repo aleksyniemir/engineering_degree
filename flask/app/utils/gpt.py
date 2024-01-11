@@ -5,6 +5,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from app.schemas.game import game_schema_create, game_schema_update
 from marshmallow import ValidationError
+from app.models.game import Game
+import app.crud.gpt as crud
 
 load_dotenv()
 
@@ -15,7 +17,6 @@ def initialize_gpt_client():
   ) 
   return client
 
-#The game must use the world from Frank Herbert's Dune. The game can start on any of the planets from the series.
 def generate_game(user_id: int, game_environment: str):
   client = initialize_gpt_client()
   
@@ -39,7 +40,7 @@ def generate_game(user_id: int, game_environment: str):
   1. Play the game in turns, starting with you.
   2. Always wait for the user to give you a response.
   3. Replace every "X" in the output with text.
-  4. 'description' must stay between 3 to 10 sentences.
+  4. 'description' must stay between 3 to 10 sentences. Change it every round.
   5. 'scene' is a one sentence description of the things that the player sees based on description.
   6. 'health' is a number from 0 to 20. The player starts with 20. If it reaches 0 or below, the player dies and the game is over (He can start the game again. Game must write completly different story). The player can lose all of his health and die by doing risky stuff. The player can gain health by eating, drinking, or sleeping. 
   7. 'weather' and 'Location' is dependent on the description.
@@ -50,38 +51,23 @@ def generate_game(user_id: int, game_environment: str):
 
   Start the game.
   '''
-
+  data = {"role": "system", "content":prompt}
+  messages = [data]
   completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
-    messages=[
-      {"role": "system", "content": prompt}
-      ]
+    messages=messages
   )
   game = json.loads(completion.choices[0].message.content)
+  response = {"role": "assistant", "content": f"""{completion.choices[0].message.content}"""}
+  messages.append(response)  
+  #prompt = json.dumps(messages).replace("\\n", "").replace("\\", "")
   game["user_id"] = user_id
   game["title"] = game_environment
-  game["prompt"] = prompt
+  game["prompt"] = json.dumps(messages)
   game["turn_number"] = 1
-  game['photo'] = b'\x00\x01\x02\x03'
+  game['photo'] = b'\x00\x01\x02\x03' # TODO change to real photo
 
-  # MOCK DATA z palca
-  # game = {
-  #   'description': 'You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.', 
-  #   'scene': 'The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.', 
-  #   'health': '20/20', 
-  #   'weather': 'Hot and dry', 
-  #   'location': 'Arrakis (Dune)', 
-  #   'inventory': 'Empty', 
-  #   'quests': 'None', 
-  #   'possible_actions': 'Explore the surroundings, look for a settlement, search for water',
-  #   "user_id": user_id, 
-  #   "title": game_environment,
-  #   "prompt": prompt,
-  #   "turn_number": 1,
-  #   'photo': b'\x00\x01\x02\x03'
-  #   }
-
-  # MOCK DATA real
+  # MOCK DATA 
   # game = {
   # 'description': "Welcome to the world of fantasy! In this magical kingdom of Elvoria, you find yourself surrounded by lush green landscapes, towering mountains, and mystical creatures. The air is filled with the sweet fragrance of blooming flowers and the gentle melody of birds chirping. As you explore the enchanting forests, you stumble upon a hidden trail leading to a secret waterfall. The cascading water shimmers under the sun's rays, creating a magical spectacle. You feel the rejuvenating mist on your skin and the peacefulness of the surroundings embrace you. Your adventure in Elvoria begins...",
   # 'scene': 'You are standing in a serene forest, mesmerized by the beauty of the hidden waterfall.',
@@ -105,9 +91,35 @@ def generate_game(user_id: int, game_environment: str):
     #TODO ask the user for input again
   return game
 
-def get_next_turn(): 
+def get_next_turn(prompt: str, command: str, turn_number: int): 
   client = initialize_gpt_client()
-  return
+  messages = json.loads(prompt)
+  messages.append({"role": "user", "content": f"""{command}"""})
+  completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=messages
+  )
+  response = {"role": "assistant", "content": f"""{completion.choices[0].message.content}"""}
+  messages.append(response)  
+  # prompt = json.dumps(messages).replace("\\n", "").replace("\\", "")
+  game = {}
+  game["prompt"] = json.dumps(messages)
+  game["photo"] = b'\x00\x01\x02\x03\x04' # TODO: change to real photo
+  game["turn_number"] = turn_number + 1
+  game["description"] = json.loads(completion.choices[0].message.content)["description"]
+  game["scene"] = json.loads(completion.choices[0].message.content)["scene"]
+  game["health"] = json.loads(completion.choices[0].message.content)["health"]
+  game["weather"] = json.loads(completion.choices[0].message.content)["weather"]
+  game["location"] = json.loads(completion.choices[0].message.content)["location"]
+  game["inventory"] = json.loads(completion.choices[0].message.content)["inventory"]
+  game["quests"] = json.loads(completion.choices[0].message.content)["quests"]
+  game["possible_actions"] = json.loads(completion.choices[0].message.content)["possible_actions"]
+  try:
+    game_schema_update.load(game)
+  except ValidationError as err:
+    print(err.messages)
+    #TODO ask the user for input again
+  return game
 
 #print(completion.choices[0].message)
 

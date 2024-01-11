@@ -47,9 +47,9 @@ def update_game(
     if game is None:
         return None
     
-    game_data = gpt.get_next_turn(game, command)
-    game = Game(**game_data)
-    session.add(game)
+    game_data = gpt.get_next_turn(game.prompt, command, game.turn_number)
+    for key, value in game_data.items():
+        setattr(game, key, value)
     session.commit()
     return game
 

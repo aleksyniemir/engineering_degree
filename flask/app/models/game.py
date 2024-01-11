@@ -10,7 +10,7 @@ class Game(db.Model):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     title: Mapped[str]
     photo: Mapped[LargeBinary] = mapped_column(LargeBinary)
-    prompt: Mapped[str] = mapped_column(String(2047))
+    prompt: Mapped[str] = mapped_column(String(8191))
     description: Mapped[str] = mapped_column(String(1023))
     scene: Mapped[str] = mapped_column(String(1023))
     turn_number: Mapped[int]    
