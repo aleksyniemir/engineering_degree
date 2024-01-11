@@ -1,12 +1,11 @@
 import os
 import json
-import base64
 from openai import OpenAI
 from dotenv import load_dotenv
 from app.schemas.game import game_schema_create, game_schema_update
 from marshmallow import ValidationError
 from app.models.game import Game
-import app.crud.gpt as crud
+from app.utils.stable_diffusion import get_image
 
 load_dotenv()
 
@@ -41,7 +40,7 @@ def generate_game(user_id: int, game_environment: str):
   2. Always wait for the user to give you a response.
   3. Replace every "X" in the output with text.
   4. 'description' must stay between 3 to 10 sentences. Change it every round.
-  5. 'scene' is a one sentence description of the things that the player sees based on description.
+  5. 'scene' is a prompt for a text-to-image model. It must describe what the player sees based on description. Change it every round.
   6. 'health' is a number from 0 to 20. The player starts with 20. If it reaches 0 or below, the player dies and the game is over (He can start the game again. Game must write completly different story). The player can lose all of his health and die by doing risky stuff. The player can gain health by eating, drinking, or sleeping. 
   7. 'weather' and 'Location' is dependent on the description.
   8. 'location' is just a name of the place where the player is. 
@@ -65,7 +64,8 @@ def generate_game(user_id: int, game_environment: str):
   game["title"] = game_environment
   game["prompt"] = json.dumps(messages)
   game["turn_number"] = 1
-  game['photo'] = b'\x00\x01\x02\x03' # TODO change to real photo
+  game['photo'] = get_image(prompt=game['scene'])
+  # game['photo'] = b'\x00\x01\x02\x03' 
 
   # MOCK DATA 
   # game = {
@@ -81,7 +81,7 @@ def generate_game(user_id: int, game_environment: str):
   # 'title': 'harry potter',
   # 'prompt': prompt,
   # 'turn_number': 1,
-  # 'photo': b'\x00\x01\x02\x03'
+  # 'photo': get_image(prompt="Forest with a waterfall")
   # }
 
   try:
@@ -104,10 +104,10 @@ def get_next_turn(prompt: str, command: str, turn_number: int):
   # prompt = json.dumps(messages).replace("\\n", "").replace("\\", "")
   game = {}
   game["prompt"] = json.dumps(messages)
-  game["photo"] = b'\x00\x01\x02\x03\x04' # TODO: change to real photo
+  game["scene"] = json.loads(completion.choices[0].message.content)["scene"]
+  game['photo'] = get_image(prompt=game['scene'])
   game["turn_number"] = turn_number + 1
   game["description"] = json.loads(completion.choices[0].message.content)["description"]
-  game["scene"] = json.loads(completion.choices[0].message.content)["scene"]
   game["health"] = json.loads(completion.choices[0].message.content)["health"]
   game["weather"] = json.loads(completion.choices[0].message.content)["weather"]
   game["location"] = json.loads(completion.choices[0].message.content)["location"]
