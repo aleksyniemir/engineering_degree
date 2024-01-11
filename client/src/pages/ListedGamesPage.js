@@ -33,6 +33,29 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
         navigate(`/gamepage/${gameId}`);
     };
 
+    const removeGame = async (gameId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/gpt/remove_game/${gameId}`, {
+            method: 'DELETE',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            });
+            const data = await response.json();
+            console.log(data);
+            if (!data || Object.keys(data).length === 0) {
+                alert('Game could not be removed.');
+                navigate('/listed_games');
+            } else {
+                alert('Game removed.');
+                navigate('/listed_games');
+            }
+        } catch (error) {
+            console.error('Error removing game:', error);
+        }
+    }
+
     return (
         <div>
             <Header/>
@@ -44,8 +67,12 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
                         onClick={() => goToGamePage(game.id)}>     
                         Load game
                     </button>
+                    <button className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"
+                        onClick={() => removeGame(game.id)}>     
+                        Remove game
+                    </button>   
                     </div>
-                ))}
+                ))};
             </ul>
         </div>
     );

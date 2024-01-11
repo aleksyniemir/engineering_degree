@@ -12,6 +12,11 @@ import GamePage from './pages/GamePage';
 import ListedGamesPage from './pages/ListedGamesPage';
 import NewGamePage from './pages/NewGamePage';
 
+// TODO - add a loading spinner for submitting the game and waiting for next turn
+// TODO - rework token logic
+// TODO - repair logout button
+// TODO - rework main page layout
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
