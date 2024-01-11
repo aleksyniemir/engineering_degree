@@ -8,6 +8,9 @@ app = create_app()
 def hello_world():
     return jsonify({"Hello":"World!"})
 
+# TODO - make the code clean
+
+
 if __name__ == "__main__":
     app.run()
 
