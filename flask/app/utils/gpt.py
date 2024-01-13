@@ -4,7 +4,6 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from app.schemas.game import game_schema_create, game_schema_update
 from marshmallow import ValidationError
-from app.models.game import Game
 from app.utils.stable_diffusion import get_image
 
 load_dotenv()
@@ -59,13 +58,11 @@ def generate_game(user_id: int, game_environment: str):
   game = json.loads(completion.choices[0].message.content)
   response = {"role": "assistant", "content": f"""{completion.choices[0].message.content}"""}
   messages.append(response)  
-  #prompt = json.dumps(messages).replace("\\n", "").replace("\\", "")
   game["user_id"] = user_id
   game["title"] = game_environment
   game["prompt"] = json.dumps(messages)
   game["turn_number"] = 1
   game['photo'] = get_image(prompt=game['scene'])
-  # game['photo'] = b'\x00\x01\x02\x03' 
 
   # MOCK DATA 
   # game = {
@@ -95,13 +92,14 @@ def get_next_turn(prompt: str, command: str, turn_number: int):
   client = initialize_gpt_client()
   messages = json.loads(prompt)
   messages.append({"role": "user", "content": f"""{command}"""})
+  if len(messages) > 7:
+    del messages[1:3]
   completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=messages
   )
   response = {"role": "assistant", "content": f"""{completion.choices[0].message.content}"""}
   messages.append(response)  
-  # prompt = json.dumps(messages).replace("\\n", "").replace("\\", "")
   game = {}
   game["prompt"] = json.dumps(messages)
   game["scene"] = json.loads(completion.choices[0].message.content)["scene"]
@@ -120,31 +118,3 @@ def get_next_turn(prompt: str, command: str, turn_number: int):
     print(err.messages)
     #TODO ask the user for input again
   return game
-
-#print(completion.choices[0].message)
-
-# completion.choices[0].message.content
-# '{\n"Description": "You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.",\n"Scene": "The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.",\n"Health": "20/20",\n"Weather": "Hot and dry",\n"Location": "Arrakis (Dune)",\n"Inventory": "Empty",\n"Quests": "None",\n"Possible actions": "Explore the surroundings, look for a settlement, search for water"\n}'
-
-#json
-# {'Description': 'You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.', 'Scene': 'The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.', 'Health': '20/20', 'Weather': 'Hot and dry', 'Location': 'Arrakis (Dune)', 'Inventory': 'Empty', 'Quests': 'None', 'Possible actions': 'Explore the surroundings, look for a settlement, search for water'}
-
-# completion_1 = client.chat.completions.create(
-#   model="gpt-3.5-turbo",
-#   messages=[
-#     {"role": "system", "content": prompt},
-#     {"role": "assistant", "content": '{\n"Description": "You are a brave adventurer who has arrived on the desert planet of Arrakis, also known as Dune. The planet is known for its harsh and inhospitable conditions, with towering sand dunes and scorching heat. You have come to this unforgiving world in search of the valuable resource known as spice, which is found only on Arrakis. Spice is highly sought after and can be used for a variety of purposes, including interstellar travel and extending life. As you step out of your ship and onto the sandy surface of Dune, you take a moment to absorb the vastness of the desert before you.",\n"Scene": "The sun beats down relentlessly, casting long shadows across the shifting sand dunes. The wind howls, carrying with it the sound of sand grains swirling and scraping against each other.",\n"Health": "20/20",\n"Weather": "Hot and dry",\n"Location": "Arrakis (Dune)",\n"Inventory": "Empty",\n"Quests": "None",\n"Possible actions": "Explore the surroundings, look for a settlement, search for water"\n}'},
-#     {"role": "user", "content": "try to find a sand worm"}
-#     ]
-# )
-
-# '{\n"Description": "As you set out to find a sand worm on the desert planet of Arrakis, you brace yourself for the dangerous task ahead. Sand worms are massive creatures that burrow deep within the desert sands, and they are the source of much fear and fascination among the inhabitants of Dune. These colossal creatures can reach incredible sizes, with some measuring hundreds of meters in length. As you venture deeper into the desert, you keep your senses alert, hoping to catch a glimpse of one of these legendary creatures.",\n"Scene": "You find yourself surrounded by endless rolling sand dunes, their golden hues shifting and shimmering in the harsh sunlight. The wind carries the faint sound of distant rumbling beneath the surface, hinting at the presence of the mighty sand worms.",\n"Health": "20/20",\n"Weather": "Hot and dry",\n"Location": "Arrakis (Dune)",\n"Inventory": "Empty",\n"Quests": "None",\n"Possible actions": "Continue exploring, search for worm tracks, create vibrations to attract a sand worm"\n}'
-# {'Description': 'As you set out to find a sand worm on the desert planet of Arrakis, you brace yourself for the dangerous task ahead. Sand worms are massive creatures that burrow deep within the desert sands, and they are the source of much fear and fascination among the inhabitants of Dune. These colossal creatures can reach incredible sizes, with some measuring hundreds of meters in length. As you venture deeper into the desert, you keep your senses alert, hoping to catch a glimpse of one of these legendary creatures.', 'Scene': 'You find yourself surrounded by endless rolling sand dunes, their golden hues shifting and shimmering in the harsh sunlight. The wind carries the faint sound of distant rumbling beneath the surface, hinting at the presence of the mighty sand worms.', 'Health': '20/20', 'Weather': 'Hot and dry', 'Location': 'Arrakis (Dune)', 'Inventory': 'Empty', 'Quests': 'None', 'Possible actions': 'Continue exploring, search for worm tracks, create vibrations to attract a sand worm'}
-
-
-
-# messages=[
-#       {"role": "system", "content": prompt},
-#       {"role": "assistant", "content": '{ "description": "Welcome to the mysterious world of Aetheria. Aetheria is a land of magic, inhabited by creatures and beings of all kinds. Deep in the heart of the Enchanted Forest, you stand in awe as the sunlight filters through the towering trees. The air is filled with a soft, enchanting melody sung by unseen creatures. You can feel the magic in the air, tingling on your skin. The forest floor is covered in a thick carpet of moss and wild flowers, their vibrant colors creating a breathtaking sight. The scent of wild berries wafts to your nose, inviting you to explore further. Overhead, you can hear the gentle rustle of leaves as the wind whispers secrets to the trees. It\'s a place of wonder and danger, where adventure awaits at every turn.", "scene": "You stand at the edge of the Enchanted Forest, with tall trees stretching as far as the eye can see. Sunlight filters through the canopy, casting dappled shadows on the forest floor.", "health": "20/20", "weather": "The weather is warm and pleasant, with a gentle breeze ruffling your hair.", "location": "Enchanted Forest", "inventory": "None", "quests": "None", "possible_actions": "1. Explore deeper into the forest. 2. Look for a nearby town or village. 3. Set up camp and rest for the night." }'},
-#       {"role": "user", "content": "Explore the world"}
-#       ]
