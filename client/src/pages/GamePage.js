@@ -11,6 +11,7 @@ function GamePage({ setIsLoggedIn }) {
     const [userInput, setUserInput] = useState('');
     const { gameId } = useParams();
     const navigate = useNavigate();
+    var [imageSrc, setImageSrc] = useState(''); 
     const [gameData, setGameData] = useState({
       description: '',
       health: '',
@@ -24,6 +25,7 @@ function GamePage({ setIsLoggedIn }) {
       turn_number: null,
       weather: ''
     });
+    
 
     useEffect( () => {
       const fetchGame = async () => {
@@ -42,6 +44,8 @@ function GamePage({ setIsLoggedIn }) {
             navigate('/listed_games');
           } else {
             setGameData(data);
+            setImageSrc(`data:image/png;base64,${data.photo}`);
+            console.log(imageSrc);
           }
         } catch (error) {
           console.error('Error fetching game:', error);
@@ -49,8 +53,6 @@ function GamePage({ setIsLoggedIn }) {
       }
       fetchGame();
     }, [gameId]); // Dependency array to fetch game data when gameId changes
-
-
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -79,6 +81,8 @@ function GamePage({ setIsLoggedIn }) {
           navigate('/listed_games');
         } else {
           setGameData(data);
+          setImageSrc(`data:image/png;base64,${data.photo}`);
+          console.log(imageSrc);
         }
 
       } catch (error) {
@@ -110,7 +114,7 @@ function GamePage({ setIsLoggedIn }) {
                   <button className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4" onClick={handleSubmit}>Submit</button>
                 </div>
                 <div className="game-photo">
-                  <img src={require("/home/aleksyniemir/Documents/studies/praca_inżynierska/aplikacja/client/src/example_img.png")} alt="" />
+                  <img src={imageSrc} alt="fetched image"/>
                 </div>
               </div>
             </div>
