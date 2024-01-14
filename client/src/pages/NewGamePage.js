@@ -13,11 +13,11 @@ const NewGamePage = () => {
     };
 
     const handleSubmit = async () => {
-        setLoading(true);
         if (!inputValue) {
             alert('Input cannot be empty');
             return;
         }
+        setLoading(true);
         try {
           const response = await fetch('http://localhost:5000/gpt/begin_game', {
           method: 'POST',
@@ -60,7 +60,7 @@ const NewGamePage = () => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        height: '100vh' // This assumes you want to take the full height of the viewport
+                        height: '100vh'
                       }}>
                         <img style={{width:"200px", height:"200px"}} src="spinner.gif"/> 
                     </div>: ""}    

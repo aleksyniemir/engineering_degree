@@ -72,7 +72,7 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
                         Remove game
                     </button>   
                     </div>
-                ))};
+                ))}
             </ul>
         </div>
     );

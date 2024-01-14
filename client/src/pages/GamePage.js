@@ -2,7 +2,6 @@
 import React, {useEffect, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './GamePage.css'; 
-import Logout from '../components/auth/Logout'
 import Header from '../components/Header';
 
 
@@ -10,6 +9,7 @@ import Header from '../components/Header';
 function GamePage({ setIsLoggedIn }) {
     const [userInput, setUserInput] = useState('');
     const { gameId } = useParams();
+    const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
     var [imageSrc, setImageSrc] = useState(''); 
     const [gameData, setGameData] = useState({
@@ -60,6 +60,7 @@ function GamePage({ setIsLoggedIn }) {
         alert('Input cannot be empty');
         return;
       }
+      setLoading(true);
       try {
         const response = await fetch(`http://localhost:5000/gpt/get_next_turn/${gameId}`, {
           method: 'PUT',
@@ -82,18 +83,27 @@ function GamePage({ setIsLoggedIn }) {
         } else {
           setGameData(data);
           setImageSrc(`data:image/png;base64,${data.photo}`);
-          console.log(imageSrc);
         }
 
       } catch (error) {
         console.error('Error:', error);
-      }
+      } finally {
+        setLoading(false);
+    }
     };
-
-
 
     return (
       <div>
+      {isLoading ? 
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100vh' 
+                      }}>
+                        <img style={{width:"200px", height:"200px"}} src="/spinner.gif" /> 
+                    </div>
+      : 
       <div className="game-page">
         <Header/>
         <div className="container">
@@ -129,6 +139,7 @@ function GamePage({ setIsLoggedIn }) {
                 </div>
             </div>
         </div>
+        }
         </div>
       );
 
