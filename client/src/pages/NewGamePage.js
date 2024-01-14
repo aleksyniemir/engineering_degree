@@ -5,6 +5,7 @@ import Header from '../components/Header';
 
 const NewGamePage = () => {
     const [inputValue, setInputValue] = useState('');
+    const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -12,6 +13,7 @@ const NewGamePage = () => {
     };
 
     const handleSubmit = async () => {
+        setLoading(true);
         if (!inputValue) {
             alert('Input cannot be empty');
             return;
@@ -37,16 +39,31 @@ const NewGamePage = () => {
           }
       } catch (error) {
           console.error('Error fetching games:', error);
+      } finally {
+          setLoading(false);
       }
         
     };
 
     return (
         <div>
-            <Header/>
+            {isLoading ? "" : 
+            (<Header/>)}
+            
             <div>
-                <input type="text" value={inputValue} onChange={handleInputChange} />
-                <button onClick={handleSubmit}>Submit</button>
+                {isLoading ? "" : 
+                (<input type="text" value={inputValue} onChange={handleInputChange} />)}
+                {isLoading ? "" : 
+                (<button onClick={handleSubmit}>Submit</button>)}
+                {isLoading ? 
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100vh' // This assumes you want to take the full height of the viewport
+                      }}>
+                        <img style={{width:"200px", height:"200px"}} src="spinner.gif"/> 
+                    </div>: ""}    
             </div>
         </div>
     );
