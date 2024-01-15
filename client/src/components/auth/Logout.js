@@ -11,7 +11,7 @@ const Logout = ({ onLogout }) => {
 
   return (
     <button 
-        className="main-button" 
+        className="header-button" 
         onClick={handleLogout}
         type="submit">
         Logout

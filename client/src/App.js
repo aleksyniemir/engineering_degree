@@ -14,10 +14,13 @@ import NewGamePage from './pages/NewGamePage';
 
 // TODO - rework token logic
 // TODO - repair logout button
-// TODO - rework main page layout
+// DONE - rework main page layout
 // TODO - update Games layout
 // TODO - add example environments
-// TODO - redo new game page
+// DONE - redo new game page
+// DONE - add a loading spinner for submitting the game and waiting for next turn
+// TODO - order games by id
+// TODO - change colors of buttons
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -63,9 +66,9 @@ function App() {
       <Routes>
         <Route path="/" element={isLoggedIn ? <Navigate to="/listed_games" /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/register" element={isLoggedIn ? <Navigate to="/listed_games" /> : <RegistrationPage />} />
-        <Route path="/gamepage/:gameId" element={isLoggedIn ? <GamePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
-        <Route path="/listed_games" element={isLoggedIn ? <ListedGamesPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
-        <Route path="/new_game" element={isLoggedIn ? <NewGamePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
+        <Route path="/gamepage/:gameId" element={isLoggedIn ? <GamePage/> : <Navigate to="/" />} />
+        <Route path="/listed_games" element={isLoggedIn ? <ListedGamesPage/> : <Navigate to="/" />} />
+        <Route path="/new_game" element={isLoggedIn ? <NewGamePage/> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );

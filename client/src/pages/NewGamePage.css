@@ -1,0 +1,51 @@
+.new-game-page {
+    height: 100vh;
+}
+
+.create-game-container {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.game-setting {
+    font-size: 18px;
+    height: 15px;
+}
+.create-game-input {
+    height: 40px;
+    width: 20%;
+    background: #f6f6f7;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    
+  }
+.create-game-input input {
+    width: 100%;  
+    height: 40px;
+    box-sizing: border-box; 
+    border-radius: 47px;    
+    padding: 12px;    
+    text-align: center;       
+  }
+.create-game-button {
+    width: auto; 
+    height: 40px;
+    background: #000000;
+    font-size: 18px;
+    color: #ffffff; 
+    cursor: pointer;
+    border-radius: 10px;
+    border: none; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s; 
+    padding: 0 12px;
+
+  }
+  
+.create-game-button:hover {
+    background: #1c1e1f; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    border-color: #505050;
+}

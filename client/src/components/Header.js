@@ -10,13 +10,13 @@ const Header = () => {
     return (
         <header className="game-header">
           <button 
-            className="main-button"  
+            className="header-button"  
             onClick={() => navigate('/new_game')}
           >
             New game
           </button>
           <button 
-            className="main-button"  
+            className="header-button"  
             onClick={() => navigate('/listed_games')} 
           >
             Games

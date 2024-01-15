@@ -52,8 +52,7 @@ function GamePage({ setIsLoggedIn }) {
         }
       }
       fetchGame();
-    }, [gameId]); // Dependency array to fetch game data when gameId changes
-
+    }, [gameId]);
     const handleSubmit = async (event) => {
       event.preventDefault();
       if (!userInput) {
@@ -149,7 +148,7 @@ function GamePage({ setIsLoggedIn }) {
                   placeholder="Your command"
                   />
               </div>
-              <button className="main-button" onClick={handleSubmit}>Submit</button>
+              <button className="submit-turn-button" onClick={handleSubmit}>Submit</button>
             </div>
           </div>
         </div>

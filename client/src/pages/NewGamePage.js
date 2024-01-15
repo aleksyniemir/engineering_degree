@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './NewGamePage.css'; 
 import Header from '../components/Header';
 
 const NewGamePage = () => {
@@ -47,24 +47,33 @@ const NewGamePage = () => {
 
     return (
         <div>
-            {isLoading ? "" : 
-            (<Header/>)}
-            
-            <div>
-                {isLoading ? "" : 
-                (<input type="text" value={inputValue} onChange={handleInputChange} />)}
-                {isLoading ? "" : 
-                (<button onClick={handleSubmit}>Submit</button>)}
-                {isLoading ? 
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '100vh'
-                      }}>
-                        <img style={{width:"200px", height:"200px"}} src="spinner.gif"/> 
-                    </div>: ""}    
+            {isLoading ? 
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh'
+              }}>
+                <img style={{width:"200px", height:"200px"}} src="spinner.gif"/> 
+            </div> 
+            : 
+            <div className="new-game-page">
+                <Header/>
+                <div className="create-game-container">
+                    <div>
+                        <p className="game-setting">Game setting:</p>
+                    </div>
+                    <div className="create-game-input"> 
+                        <input 
+                            type="text" 
+                            value={inputValue} 
+                            onChange={handleInputChange}
+                            />
+                    </div>
+                    <button className="create-game-button" onClick={handleSubmit}>Create game</button>       
+                </div>
             </div>
+            }
         </div>
     );
 };
