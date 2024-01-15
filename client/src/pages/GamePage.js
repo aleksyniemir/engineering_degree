@@ -104,44 +104,58 @@ function GamePage({ setIsLoggedIn }) {
                         <img style={{width:"200px", height:"200px"}} src="/spinner.gif" /> 
                     </div>
       : 
-      <div className="game-page">
-        <Header/>
-        <div className="container">
-            <div className="left-container">
-                <div className="game-description">
-                  <p>{gameData.description}</p>
-                </div>
-              <div className="bottom-container">
-                <div className="game-input"> 
-                  <input
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    placeholder="Your command"
-                  />
-                </div>
-                <div className="submit-game-input">
-                  <button className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4" onClick={handleSubmit}>Submit</button>
-                </div>
-                <div className="game-photo">
-                  <img src={imageSrc} alt="fetched image"/>
-                </div>
+        <div className="game-page">
+          <Header/>
+          <div className="container">
+          
+            <div className="upper-container">
+              <div className="game-description">
+                <p>{gameData.description}</p>
               </div>
             </div>
-            <div className="game-stats">
-                  Turn number: {gameData.turn_number} <br></br>
-                  Health: {gameData.health} <br></br>
-                  Weather: {gameData.weather} <br></br>
-                  Location: {gameData.location} <br></br>
-                  Inventory: {gameData.inventory} <br></br>
-                  Quests: {gameData.quests} <br></br>
-                  Possible actions: {gameData.possible_actions} <br></br>
-                </div>
+          
+            <div className="middle-container">
+              <div className="game-photo">
+                  <img src={imageSrc} alt="fetched image"/>
+              </div>
+              <div className="game-stats">
+                Turn number: {gameData.turn_number} <br/>
+                Health: {gameData.health} <br/>
+                Weather: {gameData.weather} <br/>
+                Location: {gameData.location} <br/>
+                Inventory: {gameData.inventory} <br/>
+                Quests: {gameData.quests} <br/>
+                Possible actions: <br/>
+                {gameData.possible_actions
+                    .replace(/^\{|\}$/g, '') // Remove the curly braces
+                    .split(',') // Split by comma
+                    .reduce((acc, action, index, array) => {
+                      acc.push(action.trim()); // Push the trimmed action
+                      if (index < array.length - 1) { // If it's not the last element
+                        acc.push(<br key={index} />); // Push a line break
+                      }
+                      return acc;
+                    }, [])
+                }
+              </div>
             </div>
+            
+            <div className="bottom-container">
+              <div className="game-input"> 
+                <input
+                  type="text"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  placeholder="Your command"
+                  />
+              </div>
+              <button className="main-button" onClick={handleSubmit}>Submit</button>
+            </div>
+          </div>
         </div>
         }
-        </div>
+      </div>
       );
-
+            
 }
       export default GamePage;

@@ -1,5 +1,6 @@
 import React from 'react';
 import Logout from './auth/Logout';
+import './Header.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -9,16 +10,16 @@ const Header = () => {
     return (
         <header className="game-header">
           <button 
-            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
+            className="main-button"  
             onClick={() => navigate('/new_game')}
           >
             New game
           </button>
           <button 
-            className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"  
+            className="main-button"  
             onClick={() => navigate('/listed_games')} 
           >
-            Saved games
+            Games
           </button>
           <Logout onLogout={() => setIsLoggedIn(false)} />
         </header>

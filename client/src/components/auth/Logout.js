@@ -1,4 +1,5 @@
 import React from 'react';
+import "../Header.css"
 
 const Logout = ({ onLogout }) => {
     const handleLogout = () => {
@@ -10,7 +11,7 @@ const Logout = ({ onLogout }) => {
 
   return (
     <button 
-        className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4" 
+        className="main-button" 
         onClick={handleLogout}
         type="submit">
         Logout

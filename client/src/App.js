@@ -15,6 +15,9 @@ import NewGamePage from './pages/NewGamePage';
 // TODO - rework token logic
 // TODO - repair logout button
 // TODO - rework main page layout
+// TODO - update Games layout
+// TODO - add example environments
+// TODO - redo new game page
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
