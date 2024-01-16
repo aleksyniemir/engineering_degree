@@ -19,7 +19,12 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
                 },
                 });
                 const data = await response.json();
-                setGames(data);
+                if (!data || Object.keys(data).length === 0) {
+                    setGames([]);
+                } else {
+                    const sortedGames = data.sort((a, b) => a.id - b.id);
+                    setGames(sortedGames);
+                }
             } catch (error) {
                 console.error('Error fetching games:', error);
             }

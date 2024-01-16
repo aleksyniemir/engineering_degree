@@ -19,7 +19,7 @@ import NewGamePage from './pages/NewGamePage';
 // TODO - add example environments
 // DONE - redo new game page
 // DONE - add a loading spinner for submitting the game and waiting for next turn
-// TODO - order games by id
+// DONE - order games by id
 // TODO - change colors of buttons
 
 function App() {
