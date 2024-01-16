@@ -43,14 +43,14 @@
 
 .table-container {
     display: flex;
-    justify-content: center; /* Center the table horizontally */
-    width: 100%; /* Take the full width of the container */
-    margin-top: 20px; /* Add some space at the top, adjust as needed */
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px; 
 }
 
 .table-container table {
-    width: 80%; /* Table takes up 80% of its container's width */
-    margin: auto; /* This centers the table horizontally in the .table-container */
+    width: 80%; 
+    margin: auto; 
     border-collapse: collapse;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
@@ -63,3 +63,8 @@
 }
 
 
+.no-games-message {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+}

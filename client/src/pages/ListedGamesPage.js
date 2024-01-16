@@ -7,29 +7,30 @@ import './ListedGamesPage.css';
 const ListedGamesPage = ({ setIsLoggedIn }) => {
     const [games, setGames] = useState([]);
     const navigate = useNavigate();
-    
-    useEffect(() => {
-        const fetchGames = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/gpt/listed_games', {
-                method: 'GET',
-                headers: { 
-                    'Content-Type': 'application/json', 
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                },
-                });
-                const data = await response.json();
-                if (!data || Object.keys(data).length === 0) {
-                    setGames([]);
-                } else {
-                    const sortedGames = data.sort((a, b) => a.id - b.id);
-                    setGames(sortedGames);
-                }
-            } catch (error) {
-                console.error('Error fetching games:', error);
-            }
-        };
 
+
+    const fetchGames = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/gpt/listed_games', {
+            method: 'GET',
+            headers: { 
+                'Content-Type': 'application/json', 
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            });
+            const data = await response.json();
+            if (!data || Object.keys(data).length === 0) {
+                setGames([]);
+            } else {
+                const sortedGames = data.sort((a, b) => a.id - b.id);
+                setGames(sortedGames);
+            }
+        } catch (error) {
+            console.error('Error fetching games:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchGames();
     }, []);
 
@@ -53,8 +54,7 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
                 alert('Game could not be removed.');
                 navigate('/listed_games');
             } else {
-                alert('Game removed.');
-                navigate('/listed_games');
+                await fetchGames();
             }
         } catch (error) {
             console.error('Error removing game:', error);
@@ -65,33 +65,41 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
         <div>
             <Header/>
             <div className="table-container">
-                <table>
-                <thead>
-                    <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Turn Number</th>
-                    <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {games.map((game, index) => (
-                    <tr key={game.id}>
-                        <td>{index + 1}</td>
-                        <td>{game.title}</td>
-                        <td>{game.turn_number}</td>
-                        <td>
-                        <button className="listed-game-load-button" onClick={() => goToGamePage(game.id)}>
-                            Load game
-                        </button>
-                        <button className="listed-game-remove-button" onClick={() => removeGame(game.id)}>
-                            Remove game
-                        </button>
-                        </td>
-                    </tr>
-                    ))}
-                </tbody>
-                </table>
+            {games.length === 0 ? (
+                <div className="no-games-message">
+                    <p>You don't have any games. Please use the 'Create game' button to add new ones.</p>
+                </div>
+            ) : (
+                <div className="table-container">
+                    <table>
+                    <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Turn Number</th>
+                        <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {games.map((game, index) => (
+                        <tr key={game.id}>
+                            <td>{index + 1}</td>
+                            <td>{game.title}</td>
+                            <td>{game.turn_number}</td>
+                            <td>
+                            <button className="listed-game-load-button" onClick={() => goToGamePage(game.id)}>
+                                Load game
+                            </button>
+                            <button className="listed-game-remove-button" onClick={() => removeGame(game.id)}>
+                                Remove game
+                            </button>
+                            </td>
+                        </tr>
+                        ))}
+                    </tbody>
+                    </table>
+                </div>
+            )}
             </div>
         </div>
     );

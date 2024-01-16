@@ -15,12 +15,13 @@ import NewGamePage from './pages/NewGamePage';
 // TODO - rework token logic
 // TODO - repair logout button
 // DONE - rework main page layout
-// TODO - update Games layout
-// TODO - add example environments
+// DONE - update Games layout
+// DONE - add example environments
 // DONE - redo new game page
 // DONE - add a loading spinner for submitting the game and waiting for next turn
 // DONE - order games by id
-// TODO - change colors of buttons
+// DONE - change colors of buttons
+// DONE - add a button if games page is empty
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
