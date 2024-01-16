@@ -61,7 +61,16 @@ const NewGamePage = () => {
                 <Header/>
                 <div className="create-game-container">
                     <div>
-                        <p className="game-setting">Game setting:</p>
+                        <p className="game-setting">Game setting:
+                            <span className="tooltip-container">
+                                <img src="question_mark_icon.png" alt="Info" className="question-mark-icon" />
+                                <span className="tooltip-text">
+                                    Dune, playing as Paul Atreides <br/>
+                                    Star Wars on Tatooine <br/>
+
+                                </span>
+                            </span>
+                        </p>
                     </div>
                     <div className="create-game-input"> 
                         <input 

@@ -18,7 +18,7 @@
     width: 20%;
     background: #f6f6f7;
     border-radius: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     
   }
 .create-game-input input {
@@ -48,4 +48,49 @@
     background: #1c1e1f; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
     border-color: #505050;
+}
+
+
+
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.question-mark-icon {
+  width: 20px;
+  cursor: help;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 300px; 
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  ::after {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent black transparent;
+  }
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
 }
