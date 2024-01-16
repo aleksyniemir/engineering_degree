@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
-
+import './ListedGamesPage.css';
 
 
 const ListedGamesPage = ({ setIsLoggedIn }) => {
@@ -64,21 +64,35 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
     return (
         <div>
             <Header/>
-            <h1>Listed Games</h1>
-            <ul>
-                {games.map((game) => (
-                    <div key={game.id}>Title: {game.title},  {game.id},   Turn number: {game.turn_number}
-                    <button className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"
-                        onClick={() => goToGamePage(game.id)}>     
-                        Load game
-                    </button>
-                    <button className="ripple ripple-surface ripple-surface-light btn btn-dark mb-4"
-                        onClick={() => removeGame(game.id)}>     
-                        Remove game
-                    </button>   
-                    </div>
-                ))}
-            </ul>
+            <div className="table-container">
+                <table>
+                <thead>
+                    <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Turn Number</th>
+                    <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {games.map((game, index) => (
+                    <tr key={game.id}>
+                        <td>{index + 1}</td>
+                        <td>{game.title}</td>
+                        <td>{game.turn_number}</td>
+                        <td>
+                        <button className="listed-game-load-button" onClick={() => goToGamePage(game.id)}>
+                            Load game
+                        </button>
+                        <button className="listed-game-remove-button" onClick={() => removeGame(game.id)}>
+                            Remove game
+                        </button>
+                        </td>
+                    </tr>
+                    ))}
+                </tbody>
+                </table>
+            </div>
         </div>
     );
 };

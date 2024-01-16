@@ -1,0 +1,65 @@
+.listed-game-remove-button {
+    width: auto; 
+    height: 40px;
+    background: #000000;
+    font-size: 18px;
+    color: #ffffff; 
+    cursor: pointer;
+    border-radius: 10px;
+    border: none; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s; 
+    padding: 0 12px;
+}
+  
+.listed-game-remove-button:hover {
+    background: #1c1e1f; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    border-color: #505050;
+}
+
+.listed-game-load-button {
+    width: auto; 
+    height: 40px;
+    background: #000000;
+    font-size: 18px;
+    color: #ffffff; 
+    cursor: pointer;
+    border-radius: 10px;
+    border: none; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, box-shadow 0.3s; 
+    padding: 0 12px;
+    margin-right: 8px;
+}
+  
+.listed-game-load-button:hover {
+    background: #1c1e1f; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    border-color: #505050;
+}
+
+
+
+.table-container {
+    display: flex;
+    justify-content: center; /* Center the table horizontally */
+    width: 100%; /* Take the full width of the container */
+    margin-top: 20px; /* Add some space at the top, adjust as needed */
+}
+
+.table-container table {
+    width: 80%; /* Table takes up 80% of its container's width */
+    margin: auto; /* This centers the table horizontally in the .table-container */
+    border-collapse: collapse;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.table-container th,
+.table-container td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+
