@@ -1,10 +1,11 @@
-import app.utils.gpt as gpt 
+import base64
 from flask import Blueprint, request, jsonify
-from app.utils.auth import token_required
-from app.schemas.game import *
+
 import app.utils.auth as auth
 import app.crud.gpt as crud
-import base64
+import app.utils.gpt as gpt 
+from app.schemas.game import *
+from app.utils.auth import token_required
 
 from app import db
 

@@ -1,10 +1,10 @@
 from flask import jsonify, request, Blueprint
 from marshmallow import ValidationError
 
-from app import db
 import app.crud.user as crud
 import app.utils.validators as validators
 import app.utils.auth as auth
+from app import db
 from app.schemas.user import *
 from app.utils.auth import token_required
 
@@ -28,11 +28,11 @@ def get_user(id: int):
         return jsonify({'error': 'User not found'}), 404
     return user_schema.jsonify(user)
 
-#@token_required
+@token_required
 @bp.route("/add_user", methods = ['POST'])
 def add_user():
-    #if not auth.check_if_admin():
-    #    return jsonify({"error": "You do not have enough permissions"}), 401
+    if not auth.check_if_admin():
+       return jsonify({"error": "You do not have enough permissions"}), 401
     try:
         user_dict = user_schema_create.load(request.json)
     except ValidationError as err:

@@ -1,14 +1,13 @@
-import json
+from random import randint
 
 import app.crud.user as crud
 from app import db
-from random import randint
 
-def test_get_users(client, headers):
+def test_get_users():
     users = crud.get_users(db.session)
     assert isinstance(users, list)
 
-def test_get_user_by_id(client, headers):
+def test_get_user_by_id():
     random_uid = str(randint(0,999999))
     user_data = {
         "nick": "unique_nick" + random_uid,
@@ -21,7 +20,7 @@ def test_get_user_by_id(client, headers):
     assert user.id == created_user.id
     assert user.nick == user_data["nick"]
 
-def test_get_user_by_nick(client, headers):
+def test_get_user_by_nick():
     random_uid = str(randint(0,999999))
     user_data = {
         "nick": "unique_nick" + random_uid,
@@ -33,7 +32,7 @@ def test_get_user_by_nick(client, headers):
     user = crud.get_user_by_nick(db.session, user_data["nick"])
     assert user.nick == user_data["nick"]
 
-def test_get_user_by_email(client, headers):
+def test_get_user_by_email():
     random_uid = str(randint(0,999999))
     user_data = {
         "nick": "unique_nick" + random_uid,
@@ -45,7 +44,7 @@ def test_get_user_by_email(client, headers):
     user = crud.get_user_by_email(db.session, user_data["email"])
     assert user.email == user_data["email"]
 
-def test_add_user(client, headers):
+def test_add_user():
     random_uid = str(randint(0,999999))
     user_data = {
         "nick": "unique_nick" + random_uid,
@@ -56,7 +55,7 @@ def test_add_user(client, headers):
     assert added_user.nick == user_data["nick"]
     assert added_user.email == user_data["email"]
 
-def test_update_user(client, headers):
+def test_update_user():
     random_uid = str(randint(0,999999))
     user_data = {
         "nick": "unique_nick" + random_uid,
@@ -76,7 +75,7 @@ def test_update_user(client, headers):
     assert updated_user.nick == updated_data["nick"]
     assert updated_user.email == updated_data["email"]
 
-def test_delete_user(client, headers):
+def test_delete_user():
     user_data = {
         "nick": "to_be_deleted",
         "email": "to_be_deleted@gmail.com",

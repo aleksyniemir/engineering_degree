@@ -1,10 +1,10 @@
-from app.models.user import User
-from sqlalchemy import select
-import json
 import pytest
+import json
+from sqlalchemy import select
 from random import randint
 
 from app import db
+from app.models.user import User
 from app.utils.auth import get_current_user
 
 def test_get_users(client, admin_headers):

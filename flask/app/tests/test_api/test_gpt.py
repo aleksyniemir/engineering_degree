@@ -1,5 +1,4 @@
 import json
-import json
 
 def test_begin_game(client, headers):
     json_data = {

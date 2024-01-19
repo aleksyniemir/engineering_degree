@@ -19,7 +19,7 @@ def test_add_game(client):
         'photo': b'\x00\x01\x02\x03'
     }
 
-    game_data = game_schema_create.load(game)
+    game_data = game_schema_create.load(game_dict)
     created_game = crud.add_game(db.session, game_data)
 
     game = crud.get_game_by_id(db.session, created_game.id)

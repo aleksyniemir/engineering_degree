@@ -1,24 +1,21 @@
+from sqlalchemy import select, delete
+from sqlalchemy.orm import Session
+
 import app.utils.gpt as gpt
 from app.models.game import Game
-from sqlalchemy import select
 
-from app.schemas.game import   game_schema_create, GameSchemaCreate
-from app import db
-from app.models.game import Game
-from sqlalchemy import delete
 
-def get_game_by_id(session: db.session, id: int):
+def get_game_by_id(session: Session, id: int):
     stmt = select(Game).where(Game.id==id)
     game = session.scalar(stmt)
     return game
 
-def get_listed_games(session: db.session, user_id: int):
+def get_listed_games(session: Session, user_id: int):
     stmt = select(Game).where(Game.user_id==user_id)
     games = session.scalars(stmt).all()
     return games
 
-def add_game(session, game_data):
-    # game_schema = game_schema_create.load(game_dict)
+def add_game(session: Session, game_data: dict):
     game = Game(
         user_id=game_data["user_id"],
         title=game_data["title"],
@@ -38,10 +35,7 @@ def add_game(session, game_data):
     session.commit()
     return game
 
-def update_game(
-        session: db.session,
-        game_id: int,
-        command: str):
+def update_game(session: Session, game_id: int, command: str):
     game = get_game_by_id(session, game_id)
 
     if game is None:
@@ -53,8 +47,7 @@ def update_game(
     session.commit()
     return game
 
-
-def remove_game(session: db.session, game_id: int):
+def remove_game(session: Session, game_id: int):
     game = get_game_by_id(session, game_id)
 
     if game is None:

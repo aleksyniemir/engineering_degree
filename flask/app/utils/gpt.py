@@ -2,9 +2,10 @@ import os
 import json
 from openai import OpenAI
 from dotenv import load_dotenv
-from app.schemas.game import game_schema_create, game_schema_update
 from marshmallow import ValidationError
+
 from app.utils.stable_diffusion import get_image
+from app.schemas.game import game_schema_create, game_schema_update
 
 load_dotenv()
 
@@ -45,7 +46,7 @@ def generate_game(user_id: int, game_environment: str):
   8. 'location' is just a name of the place where the player is. 
   9. 'inventory' is a list of items that the player has. The player can gain items by picking them up or by buying them. The player can lose items by dropping them or by selling them. The player can use items by eating them, drinking them, or by using them. The player can only use items that he has in his inventory. If empty, write 'None'.
   10. 'quests' can be created by the game or can be gained from talking to people. If empty, write 'None'.
-  11. 'possible_actions' are representing what the player can do next. Every action should be very short. There should be three possible actions. Example: "{{'Kill the intruder','Talk to intruder', 'Escape through the window'}}".
+  11. 'possible_actions' are representing what the player can do next. Every action should be very short. There should be three possible actions. Example: "['Kill the intruder','Talk to intruder', 'Escape through the window']".
 
   Start the game.
   '''
@@ -55,7 +56,10 @@ def generate_game(user_id: int, game_environment: str):
     model="gpt-3.5-turbo",
     messages=messages
   )
+
+  print(completion.choices[0].message.content)
   game = json.loads(completion.choices[0].message.content)
+
   response = {"role": "assistant", "content": f"""{completion.choices[0].message.content}"""}
   messages.append(response)  
   game["user_id"] = user_id
@@ -85,7 +89,6 @@ def generate_game(user_id: int, game_environment: str):
     game_schema_create.load(game)
   except ValidationError as err:
     print(err.messages)
-    #TODO ask the user for input again
   return game
 
 def get_next_turn(prompt: str, command: str, turn_number: int): 
@@ -116,5 +119,4 @@ def get_next_turn(prompt: str, command: str, turn_number: int):
     game_schema_update.load(game)
   except ValidationError as err:
     print(err.messages)
-    #TODO ask the user for input again
   return game

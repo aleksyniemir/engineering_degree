@@ -1,10 +1,10 @@
-from flask import jsonify, request, Blueprint, current_app, g
+import jwt
+from flask import jsonify, request, current_app, g
 from datetime import datetime, timedelta
 from functools import wraps
-import jwt
 
-from app import db
 import app.crud.user as crud
+from app import db
 
 def token_required(f):
     @wraps(f)

@@ -1,6 +1,6 @@
-from flask import jsonify, request, Blueprint, current_app, g
-
+from flask import jsonify, request, Blueprint
 from app import db
+
 import app.crud.user as crud
 import app.utils.auth as auth
 import app.utils.validators as validators
@@ -41,8 +41,3 @@ def sign_up():
     crud.add_user(db.session, user_dict)
     token = auth.get_token(user_dict["nick"])
     return jsonify({'message': 'User registered successfully!', 'token': token}), 201
-
-@bp.route("/logout", methods=['POST'])
-def logout():
-    #TODO invalidate token
-    return jsonify({"message": "Logged out successfully!"}), 200

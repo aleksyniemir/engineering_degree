@@ -1,28 +1,30 @@
-from sqlalchemy import select
-from app.models.user import User
 from flask import jsonify
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-def get_users(session):
+from app.models.user import User
+
+def get_users(session: Session):
     stmt = select(User)
     users = session.scalars(stmt).all()
     return users
 
-def get_user_by_id(session, id):
+def get_user_by_id(session: Session, id: int):
     stmt = select(User).where(User.id==id)
     user = session.scalar(stmt)
     return user
 
-def get_user_by_nick(session, nick):
+def get_user_by_nick(session: Session, nick: str):
     stmt = select(User).where(User.nick==nick)
     user = session.scalar(stmt)
     return user
 
-def get_user_by_email(session, email):
+def get_user_by_email(session: Session, email: str):
     stmt = select(User).where(User.email==email)
     user = session.scalar(stmt)
     return user
 
-def add_user(session, user_dict):
+def add_user(session: Session, user_dict: dict):
     user = User(
         nick=user_dict["nick"], 
         email=user_dict["email"], 
@@ -32,7 +34,7 @@ def add_user(session, user_dict):
     session.commit()
     return user
 
-def update_user(session, id, user_dict):
+def update_user(session: Session, id: int, user_dict: dict):
     user = get_user_by_id(session, id)
     if user is None:
         return None
@@ -48,7 +50,7 @@ def update_user(session, id, user_dict):
     session.commit()
     return user
 
-def delete_user(session, id):
+def delete_user(session: Session, id: int):
     user = get_user_by_id(session, id)
     session.delete(user)
     session.commit()
