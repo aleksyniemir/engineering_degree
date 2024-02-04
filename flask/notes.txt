@@ -1,5 +1,5 @@
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWxla3N5bmllbWlyIiwiZXhwIjo3NzAzNjAzMjI3fQ.YzajFg14IrqK2pg3VDPE3gslJ8bdzfPXxPDrH0UA6rI" -d "{\"game_environment\": \"test\"}" http://localhost:5000/gpt/begin_game
-curl -X POST -H "Content-Type: application/json" -d '{"nick":"test_user", "email":"test_email@email.com", "password":"test_password"}'  http://localhost:5000/user/add_user
+curl -X POST -H "Content-Type: application/json" -d '{"nick":"admin", "email":"admin@email.com", "password":"haslo123"}'  http://localhost:5000/user/add_user
 curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiYWxla3N5bmllbWlyIiwiZXhwIjo3NzAzNjAzMjI3fQ.YzajFg14IrqK2pg3VDPE3gslJ8bdzfPXxPDrH0UA6rI" -d "{\"game_environment\": \"test\"}" http://localhost:5000/gpt/begin_game
 
 
