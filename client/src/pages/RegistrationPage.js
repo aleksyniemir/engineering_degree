@@ -5,10 +5,10 @@ import {
 } from 'mdb-react-ui-kit';
 
 
-function RegistrationPage({ onRegistrationSuccess }) {
+function RegistrationPage() {
   return (
     <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
-      <Register onRegistrationSuccess={onRegistrationSuccess} />
+      <Register/>
 
       <div className="text-center">
         <p>Already a member? <a href="/">Login</a></p>
