@@ -125,16 +125,13 @@ function GamePage({ setIsLoggedIn }) {
                 Inventory: {gameData.inventory} <br/>
                 Quests: {gameData.quests} <br/>
                 Possible actions: <br/>
-                {gameData.possible_actions
-                    .replace(/^\{|\}$/g, '') // Remove the curly braces
-                    .split(',') // Split by comma
-                    .reduce((acc, action, index, array) => {
-                      acc.push(action.trim()); // Push the trimmed action
-                      if (index < array.length - 1) { // If it's not the last element
-                        acc.push(<br key={index} />); // Push a line break
-                      }
-                      return acc;
-                    }, [])
+                {
+                  gameData.possible_actions.slice(1, -1)
+                  .slice(1, -1)
+                  .split("', '") 
+                  .map((action, index) => (
+                    <div key={index}>- {action}</div> 
+                  ))
                 }
               </div>
             </div>
