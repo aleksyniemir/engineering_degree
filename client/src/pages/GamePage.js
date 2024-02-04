@@ -53,6 +53,7 @@ function GamePage({ setIsLoggedIn }) {
       }
       fetchGame();
     }, [gameId]);
+
     const handleSubmit = async (event) => {
       event.preventDefault();
       if (!userInput) {
@@ -82,6 +83,7 @@ function GamePage({ setIsLoggedIn }) {
         } else {
           setGameData(data);
           setImageSrc(`data:image/png;base64,${data.photo}`);
+          setUserInput('');
         }
 
       } catch (error) {
