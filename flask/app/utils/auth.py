@@ -46,7 +46,7 @@ def get_token(nick: str):
     token = jwt.encode(
         {
             'user': nick, 
-            'exp': datetime.utcnow() + timedelta(minutes=100000000)
+            'exp': datetime.utcnow() + timedelta(minutes=30)
         }, 
         current_app.config['SECRET_KEY'],
         algorithm="HS256"
