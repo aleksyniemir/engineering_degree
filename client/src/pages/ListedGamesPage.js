@@ -63,7 +63,7 @@ const ListedGamesPage = ({ setIsLoggedIn }) => {
 
     return (
         <div>
-            <Header/>
+            <Header setIsLoggedIn={setIsLoggedIn} />
             <div className="table-container">
             {games.length === 0 ? (
                 <div className="no-games-message">

@@ -12,17 +12,6 @@ import GamePage from './pages/GamePage';
 import ListedGamesPage from './pages/ListedGamesPage';
 import NewGamePage from './pages/NewGamePage';
 
-// TODO - rework token logic
-// TODO - repair logout button
-// DONE - rework main page layout
-// DONE - update Games layout
-// DONE - add example environments
-// DONE - redo new game page
-// DONE - add a loading spinner for submitting the game and waiting for next turn
-// DONE - order games by id
-// DONE - change colors of buttons
-// DONE - add a button if games page is empty
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -44,9 +33,9 @@ function App() {
             localStorage.removeItem('token');
           }
         } catch (e) {
+          localStorage.removeItem('token');
           setIsLoggedIn(false);
           console.log("catch");
-          localStorage.removeItem('token');
         }
       } else {
         console.log("if not token");
@@ -55,7 +44,7 @@ function App() {
     };
 
     checkToken();
-  }, []); // Empty dependency array to run only on component mount
+  }, [isLoggedIn]); 
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
@@ -65,11 +54,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={isLoggedIn ? <Navigate to="/listed_games" /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
-        <Route path="/register" element={isLoggedIn ? <Navigate to="/listed_games" /> : <RegistrationPage />} />
-        <Route path="/gamepage/:gameId" element={isLoggedIn ? <GamePage/> : <Navigate to="/" />} />
-        <Route path="/listed_games" element={isLoggedIn ? <ListedGamesPage/> : <Navigate to="/" />} />
-        <Route path="/new_game" element={isLoggedIn ? <NewGamePage/> : <Navigate to="/" />} />
+        <Route path="/" element={isLoggedIn ? <Navigate to="/listed_games" /> : <LoginPage onLoginSuccess={handleLoginSuccess} setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/register" element={isLoggedIn ? <Navigate to="/listed_games" /> : <RegistrationPage/>} />
+        <Route path="/gamepage/:gameId" element={isLoggedIn ? <GamePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
+        <Route path="/listed_games" element={isLoggedIn ? <ListedGamesPage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
+        <Route path="/new_game" element={isLoggedIn ? <NewGamePage setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );

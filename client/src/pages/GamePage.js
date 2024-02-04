@@ -106,7 +106,7 @@ function GamePage({ setIsLoggedIn }) {
                     </div>
       : 
         <div className="game-page">
-          <Header/>
+          <Header setIsLoggedIn={setIsLoggedIn} />
           <div className="container">
           
             <div className="upper-container">

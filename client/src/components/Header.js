@@ -2,11 +2,9 @@ import React from 'react';
 import Logout from './auth/Logout';
 import './Header.css';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
-const Header = () => {
+const Header = ({ setIsLoggedIn }) => {
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     return (
         <header className="game-header">
           <button 
@@ -21,7 +19,7 @@ const Header = () => {
           >
             Games
           </button>
-          <Logout onLogout={() => setIsLoggedIn(false)} />
+          <Logout setIsLoggedIn={setIsLoggedIn}/>
         </header>
     );
 };

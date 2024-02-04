@@ -1,12 +1,10 @@
 import React from 'react';
 import "../Header.css"
 
-const Logout = ({ onLogout }) => {
+const Logout = ({ setIsLoggedIn }) => {
     const handleLogout = () => {
         localStorage.removeItem('token');
-        if (onLogout) {
-          onLogout(false);
-        }
+        setIsLoggedIn(false)
       };
 
   return (
