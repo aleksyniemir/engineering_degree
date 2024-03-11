@@ -39,7 +39,7 @@ def generate_game(user_id: int, game_environment: str):
   1. Play the game in turns, starting with you.
   2. Always wait for the user to give you a response.
   3. Replace every "X" in the output with text.
-  4. 'description' must stay between 3 to 10 sentences. Change it every round. Remember about game environment: {game_environment}. Create the description as a game master. Add events, characters, objects, etc. Be creative.
+  4. 'description' must stay between 5 to 10 sentences. Change it every round. Remember about game environment: {game_environment}. You are a game master, so create an appropriate description. In every turn add unexpected events, new characters, or something that will make the game interesting.
   5. 'scene' is a prompt for a text-to-image model. It must describe what the player sees based on description. Change it every round.
   6. 'health' is a number from 0 to 20. The player starts with 20. If it reaches 0 or below, the player dies and the game is over (He can start the game again. Game must write completly different story). The player can lose all of his health and die by doing risky stuff. The player can gain health by eating, drinking, or sleeping. 
   7. 'weather' is dependent on the description. It must stay between 1 to 3 words. 
