@@ -139,15 +139,17 @@ function GamePage({ setIsLoggedIn }) {
             </div>
             
             <div className="bottom-container">
-              <div className="game-input"> 
-                <input
-                  type="text"
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  placeholder="Your command"
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                <div className="game-input"> 
+                  <input
+                    type="text"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    placeholder="Your command"
                   />
-              </div>
-              <button className="submit-turn-button" onClick={handleSubmit}>Submit</button>
+                </div>
+                <button className="submit-turn-button" type="submit">Submit</button>
+              </form>
             </div>
           </div>
         </div>
