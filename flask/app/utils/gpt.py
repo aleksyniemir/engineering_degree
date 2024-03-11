@@ -46,7 +46,7 @@ def generate_game(user_id: int, game_environment: str):
   8. 'location' is just a name of the place where the player is. It must stay between 1 to 3 words.  
   9. 'inventory' is a list of items that the player has. The player can gain items by picking them up or by buying them. The player can lose items by dropping them or by selling them. The player can use items by eating them, drinking them, or by using them. The player can only use items that he has in his inventory. If empty, write 'None'.
   10. 'quests' can be created by the game or can be gained from talking to people. If empty, write 'None'. Player can have only one quest. 'quests' must be up to 25 characters long.
-  11. 'possible_actions' are representing what the player can do next. Every action should be very short. There should be three possible actions. Example: "['Kill the intruder','Talk to intruder', 'Escape through the window']". It must be a string. Use double quotes outside, and single quotes inside the list.
+  11. 'possible_actions' are representing what the player can do next. Every action should be very short. There should be three possible actions. Example: "['Kill the intruder', 'Talk to intruder', 'Escape through the window']". It must be a string. Use double quotes outside, and single quotes inside the list. The string should begin with "['. Then between the actions there should be ', '. And at the end there should be ']"  
 
   Start the game.
   '''
